@@ -10,7 +10,7 @@ namespace OptimizatonMethods.Models.Data.Abstract
     {
         IEnumerable<Task> GetAllTasks();
         Task GetTask(int id);
-        void SaveTast(Task task);
+        void SaveTask(Task task);
         void DeleteTask(int id);
 
     }

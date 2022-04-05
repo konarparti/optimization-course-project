@@ -17,22 +17,37 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
         }
         public IEnumerable<Method> GetAllMethods()
         {
-            throw new NotImplementedException();
+            return _context.Methods.ToList();
         }
 
         public Method GetMethod(int id)
         {
-            throw new NotImplementedException();
+            return _context.Methods.First(m => m.Id == id);
         }
 
         public void SaveMethod(Method method)
         {
-            throw new NotImplementedException();
+            if (method.Id == 0)
+                _context.Methods.Add(method);
+            else
+            {
+                var dbEntry = _context.Methods.FirstOrDefault(m => m.Id == method.Id);
+                if (dbEntry != null)
+                {
+                    dbEntry.Name = method.Name;
+                    dbEntry.Activated = method.Activated;
+                }
+            }
+            _context.SaveChanges();
+
         }
 
         public void DeleteMethod(int id)
         {
-            throw new NotImplementedException();
+            var value = _context.Methods.Find(id);
+            if (value != null)
+                _context.Methods.Remove(value);
+            _context.SaveChanges();
         }
     }
 }

@@ -15,24 +15,32 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
         {
             _context = context;
         }
-        public IEnumerable<User> GetAllUsers()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<User> GetAllUsers() => _context.Users.ToList();
 
-        public User GetUser(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public User GetUser(int id) => _context.Users.First(u => u.Id == id);
 
         public void SaveUser(User user)
         {
-            throw new NotImplementedException();
+            if (user.Id == 0)
+                _context.Users.Add(user);
+            else
+            {
+                var dbEntry = _context.Users.FirstOrDefault(u => u.Id == user.Id);
+                if (dbEntry != null)
+                {
+                    dbEntry.Username = user.Username;
+                    dbEntry.Password = user.Password;
+                }
+            }
+            _context.SaveChanges();
         }
 
         public void DeleteUser(int id)
         {
-            throw new NotImplementedException();
+            var value = _context.Users.Find(id);
+            if (value != null)
+                _context.Users.Remove(value);
+            _context.SaveChanges();
         }
     }
 }
