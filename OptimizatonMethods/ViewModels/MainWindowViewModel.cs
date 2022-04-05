@@ -15,6 +15,7 @@ namespace OptimizatonMethods.ViewModels
         private readonly ITaskRepository _taskRepository;
         private readonly IMethodRepository _methodRepository;
         private IEnumerable<Method> _methods;
+        private IEnumerable<Task> _tasks;
         #endregion
 
         #region Constructors
@@ -22,12 +23,22 @@ namespace OptimizatonMethods.ViewModels
         {
             _userRepository = user;
             _taskRepository = task;
-            _methodRepository = method; 
+            _methodRepository = method;
+            _methods = _methodRepository.GetAllMethods();
+            _tasks = _taskRepository.GetAllTasks();
+
         }
         #endregion
 
         #region Properties
-        public IEnumerable<Method> Methods { get; set; }
+        public IEnumerable<Method> Methods {
+            get => _methods;
+            set
+            {
+                _methods = _methodRepository.GetAllMethods();
+                OnPropertyChanged();
+            } 
+        }
         #endregion
 
         #region Commands

@@ -51,7 +51,7 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="10">
                 Выбор метода оптимизации:
             </TextBlock>
-            <ComboBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="10 8"  ></ComboBox>
+            <ComboBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="10 8"  ItemsSource="{Binding Methods.Name}" ></ComboBox>
 
             <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="10">
                 Выбор варианта:

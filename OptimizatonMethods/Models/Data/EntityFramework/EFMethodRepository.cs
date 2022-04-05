@@ -17,21 +17,21 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
         }
         public IEnumerable<Method> GetAllMethods()
         {
-            return _context.Methods.ToList();
+            return _context.Method.ToList();
         }
 
         public Method GetMethod(int id)
         {
-            return _context.Methods.First(m => m.Id == id);
+            return _context.Method.First(m => m.Id == id);
         }
 
         public void SaveMethod(Method method)
         {
             if (method.Id == 0)
-                _context.Methods.Add(method);
+                _context.Method.Add(method);
             else
             {
-                var dbEntry = _context.Methods.FirstOrDefault(m => m.Id == method.Id);
+                var dbEntry = _context.Method.FirstOrDefault(m => m.Id == method.Id);
                 if (dbEntry != null)
                 {
                     dbEntry.Name = method.Name;
@@ -44,9 +44,9 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
 
         public void DeleteMethod(int id)
         {
-            var value = _context.Methods.Find(id);
+            var value = _context.Method.Find(id);
             if (value != null)
-                _context.Methods.Remove(value);
+                _context.Method.Remove(value);
             _context.SaveChanges();
         }
     }

@@ -16,7 +16,7 @@ namespace OptimizatonMethods
         {
         }
 
-        public virtual DbSet<Method> Methods { get; set; } = null!;
+        public virtual DbSet<Method> Method { get; set; } = null!;
         public virtual DbSet<Task> Tasks { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 

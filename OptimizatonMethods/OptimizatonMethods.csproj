@@ -27,4 +27,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="MO_course.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
