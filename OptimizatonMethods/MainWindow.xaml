@@ -62,27 +62,27 @@
                 Ограничения:
             </TextBlock>
 
-            <xctk:DoubleUpDown Grid.Row="5" Grid.Column="0" Margin="10"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Grid.Row="5" Grid.Column="0" Margin="8"></xctk:DoubleUpDown>
             <TextBlock Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Margin="10">
                 ≤ T1 ≤
             </TextBlock>
-            <xctk:DoubleUpDown Grid.Row="5" Grid.Column="2" Margin="10"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Grid.Row="5" Grid.Column="2" Margin="8"></xctk:DoubleUpDown>
 
-            <xctk:DoubleUpDown Grid.Row="6" Grid.Column="0" Margin="10"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Grid.Row="6" Grid.Column="0" Margin="8"></xctk:DoubleUpDown>
             <TextBlock Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" Margin="10">
                 ≤ T2 ≤
             </TextBlock>
-            <xctk:DoubleUpDown Grid.Row="6" Grid.Column="2" Margin="10"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Grid.Row="6" Grid.Column="2" Margin="8"></xctk:DoubleUpDown>
 
             <TextBlock Grid.Row="7" Grid.Column="0"  HorizontalAlignment="Center" Margin="10">
                 T2 - T1 ≥
             </TextBlock>
-            <xctk:DoubleUpDown Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Margin="10"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Margin="8"></xctk:DoubleUpDown>
 
             <TextBlock Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="10">
                 Точность решения:
             </TextBlock>
-            <xctk:DoubleUpDown Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Margin="10"></xctk:DoubleUpDown>
+            <xctk:DecimalUpDown  Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Margin="8" Increment="0.1" Minimum="0.1" Value="0.1"></xctk:DecimalUpDown>
 
             <Button Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Margin=" 7">Рассчитать</Button>
         </Grid>
