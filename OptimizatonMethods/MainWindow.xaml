@@ -51,28 +51,28 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="10">
                 Выбор метода оптимизации:
             </TextBlock>
-            <ComboBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="10 8"  ItemsSource="{Binding Methods.Name}" ></ComboBox>
+            <ComboBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="10 5"  ItemsSource="{Binding AllMethods}" DisplayMemberPath="Name" ></ComboBox>
 
             <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="10">
                 Выбор варианта:
             </TextBlock>
-            <ComboBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="10 8"  ></ComboBox>
+            <ComboBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="10 5" ItemsSource="{Binding AllTasks}" DisplayMemberPath="Name"></ComboBox>
 
             <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="10">
                 Ограничения:
             </TextBlock>
 
-            <xctk:DoubleUpDown Grid.Row="5" Grid.Column="0" Margin="8"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Grid.Row="5" Grid.Column="0" Margin="8" Value="{Binding Task.T1min}"></xctk:DoubleUpDown>
             <TextBlock Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Margin="10">
                 ≤ T1 ≤
             </TextBlock>
-            <xctk:DoubleUpDown Grid.Row="5" Grid.Column="2" Margin="8"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Grid.Row="5" Grid.Column="2" Margin="8" Value="{Binding Task.T1max}"></xctk:DoubleUpDown>
 
-            <xctk:DoubleUpDown Grid.Row="6" Grid.Column="0" Margin="8"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Grid.Row="6" Grid.Column="0" Margin="8" Value="{Binding Task.T2min}"></xctk:DoubleUpDown>
             <TextBlock Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" Margin="10">
                 ≤ T2 ≤
             </TextBlock>
-            <xctk:DoubleUpDown Grid.Row="6" Grid.Column="2" Margin="8"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Grid.Row="6" Grid.Column="2" Margin="8" Value="{Binding Task.T2max}"></xctk:DoubleUpDown>
 
             <TextBlock Grid.Row="7" Grid.Column="0"  HorizontalAlignment="Center" Margin="10">
                 T2 - T1 ≥
