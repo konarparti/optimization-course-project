@@ -1,9 +1,7 @@
-﻿using OptimizatonMethods.Models.Data.Abstract;
-using System;
+﻿using OptimizatonMethods.Models;
+using OptimizatonMethods.Models.Data.Abstract;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WPF_MVVM_Classes;
 
 namespace OptimizatonMethods.ViewModels
@@ -17,6 +15,8 @@ namespace OptimizatonMethods.ViewModels
         private IEnumerable<Method> _allMethods;
         private IEnumerable<Task> _allTasks;
         private Task _task;
+        private RelayCommand? _calculateCommand;
+        private IEnumerable _dataList;
         #endregion
 
         #region Constructors
@@ -27,7 +27,6 @@ namespace OptimizatonMethods.ViewModels
             _methodRepository = method;
             _allMethods = _methodRepository.GetAllMethods();
             _allTasks = _taskRepository.GetAllTasks();
-            _task = _taskRepository.GetTask(1);
 
         }
         #endregion
@@ -61,10 +60,32 @@ namespace OptimizatonMethods.ViewModels
             }
         }
 
+        public IEnumerable DataList
+        {
+            get => _dataList;
+            set
+            {
+                _dataList = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
-        #region Commands
+        #region Command
 
+        public RelayCommand CalculateCommand
+        {
+            get
+            {
+                return _calculateCommand ??= new RelayCommand(c =>
+                {
+                    var calc = new MathModel();
+                    calc.Calculate(out var points2D, out var points3D);
+                    DataList = points3D;
+                });
+            }
+        }
         #endregion
     }
 }

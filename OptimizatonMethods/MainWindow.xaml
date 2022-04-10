@@ -20,9 +20,6 @@
         <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <MenuItem Header="Файл">
                 <MenuItem Header="Сменить пользователя"/>
-                <MenuItem Header="Сохранить графики..."/>
-                <MenuItem Header="2D-график"/>
-                <MenuItem Header="3D-график"/>
             </MenuItem>
             <MenuItem Header="О программе"/>
         </Menu>
@@ -84,8 +81,38 @@
             </TextBlock>
             <xctk:DecimalUpDown  Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Margin="8" Increment="0.1" Minimum="0.1" Value="0.1"></xctk:DecimalUpDown>
 
-            <Button Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Margin=" 7">Рассчитать</Button>
+            <Button Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Margin=" 7" Command="{Binding CalculateCommand}">Рассчитать</Button>
         </Grid>
 
+        <TabControl Grid.Row="1" Grid.Column="1">
+            <TabItem>
+                <TabItem.Header>
+                    Таблица значений
+                </TabItem.Header>
+                <TabItem.Content>
+                    <DataGrid  ItemsSource="{Binding DataList}"></DataGrid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    2D график
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    3D график
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    Задача
+                </TabItem.Header>
+                <TabItem.Content>
+                   <TextBlock>
+                       Текст задачи
+                   </TextBlock>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
