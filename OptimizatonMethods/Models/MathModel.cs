@@ -11,8 +11,8 @@ namespace OptimizatonMethods.Models
         public int CalculationCount { get; private set; } = 0;
         private static double Function(double t1, double t2)
         {
-            double alpha = 1; 
-            double beta = 1; 
+            double alpha = 1;
+            double beta = 1;
             double mu = 1;
             double delta = 1;
             double G = 1;
@@ -43,19 +43,25 @@ namespace OptimizatonMethods.Models
                         continue;
                     double val = Function(Param1Coord, Param2Coord);
                     CalculationCount++;
-                    if (funcMin - val > 0.001)
+                    if (val < 1_000_000)
                     {
-                        param1min = Param1Coord;
-                        param2min = Param2Coord;
-                        funcMin = val;
+
+                        if (funcMin - val > 0.001)
+                        {
+                            param1min = Param1Coord;
+                            param2min = Param2Coord;
+                            funcMin = val;
+                        }
+
+                        if (val - funcMax > 0.001)
+                        {
+                            param1max = Param1Coord;
+                            param2max = Param2Coord;
+                            funcMax = val;
+                        }
+
+                        points3D.Add(new Point3D(Math.Round(Param1Coord, 1), Math.Round(Param2Coord, 1), Math.Round(val, 1)));
                     }
-                    if (val - funcMax > 0.001)
-                    {
-                        param1max = Param1Coord;
-                        param2max = Param2Coord;
-                        funcMax = val;
-                    }
-                    points3D.Add(new Point3D(Math.Round(Param1Coord, 2), Math.Round(Param2Coord,2), Math.Round(val, 2)));
                 }
             points.Add(new Point(param1min, param2min));
         }
