@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.VisualBasic;
 
 namespace OptimizatonMethods
 {
@@ -23,6 +24,7 @@ namespace OptimizatonMethods
         public AdminWindow()
         {
             InitializeComponent();
+            
         }
 
         private void AdminWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -36,5 +38,7 @@ namespace OptimizatonMethods
                 e.Column.Header = descriptor.DisplayName ?? descriptor.Name;
             }
         }
+
+        
     }
 }

@@ -14,12 +14,17 @@ namespace OptimizatonMethods.ViewModels
 {
     public class AutorizationWindowViewModel : ViewModelBase
     {
+        #region Variables
+
         private readonly IUserRepository _userRepository;
         private readonly IMethodRepository _methodRepository;
         private readonly ITaskRepository _taskRepository;
         private string _username;
         private string _password;
 
+        #endregion
+
+        #region Constructors
         public AutorizationWindowViewModel(IUserRepository userRepository, IMethodRepository methodRepository, ITaskRepository taskRepository)
         {
             _userRepository = userRepository;
@@ -27,6 +32,9 @@ namespace OptimizatonMethods.ViewModels
             _taskRepository = taskRepository;
         }
 
+        #endregion
+
+        #region Properties
         public string Username
         {
             get => _username;
@@ -45,6 +53,10 @@ namespace OptimizatonMethods.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        #endregion
+
+        #region Commands
 
         public RelayCommand LoginCommand
         {
@@ -71,5 +83,8 @@ namespace OptimizatonMethods.ViewModels
                 });
             }
         }
+
+        #endregion
+
     }
 }
