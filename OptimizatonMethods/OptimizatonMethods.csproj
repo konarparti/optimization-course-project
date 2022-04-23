@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="WPF_MVVM_Classes">
       <HintPath>Services\WPF_MVVM_Classes.dll</HintPath>
     </Reference>

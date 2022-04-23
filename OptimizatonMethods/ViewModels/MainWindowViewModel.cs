@@ -5,8 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using AwokeKnowing.GnuplotCSharp;
+using OptimizatonMethods.Services;
 using WPF_MVVM_Classes;
+using ViewModelBase = OptimizatonMethods.Services.ViewModelBase;
 
 namespace OptimizatonMethods.ViewModels
 {
@@ -134,8 +135,7 @@ namespace OptimizatonMethods.ViewModels
                         Z[i] = r.Z;
                         i++;
                     }
-                    GnuPlot.Set("cntrparam levels 20", "isosamples 50", "xr[-18:7]", "yr[-8:8]"); //notice cntrparam levels (# height levels)
-                    GnuPlot.Contour(X, Y, Z, "lc rgb 'blue'");                      //plot a 3d function (or data)
+                   
                 });
             }
         }
@@ -158,15 +158,24 @@ namespace OptimizatonMethods.ViewModels
                         Z[i] = r.Z;
                         i++;
                     }
-                    GnuPlot.Set("dgrid3d 100,100,2");
-                    //set the range for the x,y,z axis and plot (using pm3d to map height to color)
-                    GnuPlot.Set("xrange[-18:7]", "yrange[0:8]", "zrange[0:1000000]");
-                    GnuPlot.SPlot(X, Y, Z, "with pm3d");
-
+                   
 
                 });
             }
         }
+
+        public RelayCommand AutorizationCommand
+        {
+            get
+            {
+                return new RelayCommand(c =>
+                {
+                    var autoriation = new AutorizationWindowViewModel(_userRepository);
+                    ShowAutorization(autoriation);
+                });
+            }
+        }
+
         #endregion
     }
 }

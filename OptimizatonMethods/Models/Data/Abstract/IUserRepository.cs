@@ -5,7 +5,7 @@ namespace OptimizatonMethods.Models.Data.Abstract
     public interface IUserRepository
     {
         IEnumerable<User> GetAllUsers();
-        User GetUser(int id);
+        bool VerifyUser(string username, string password);
         void SaveUser(User user);
         
         //TODO: возможно стоит возвращать удаленного user 

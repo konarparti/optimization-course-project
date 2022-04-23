@@ -14,7 +14,15 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
         }
         public IEnumerable<User> GetAllUsers() => _context.Users.ToList();
 
-        public User GetUser(int id) => _context.Users.First(u => u.Id == id);
+        public bool VerifyUser(string username, string password)
+        {
+            var value =_context.Users.FirstOrDefault(x => (x.Username == username && x.Password == password));
+            if (value != null)
+                return true;
+            else
+                return false;
+        }
+
 
         public void SaveUser(User user)
         {

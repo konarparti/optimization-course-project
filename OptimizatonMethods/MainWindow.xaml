@@ -19,7 +19,7 @@
 
         <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <MenuItem Header="Файл">
-                <MenuItem Header="Сменить пользователя"/>
+                <MenuItem Header="Сменить пользователя" Command="{Binding AutorizationCommand}"/>
                 <MenuItem Header="2D график" Command="{Binding TwoDChartCommand}"/>
                 <MenuItem Header="3D график" Command="{Binding ThreeDChartCommand}"/>
             </MenuItem>
