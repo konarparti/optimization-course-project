@@ -14,13 +14,17 @@ namespace OptimizatonMethods.ViewModels
 {
     public class AutorizationWindowViewModel : ViewModelBase
     {
-        private readonly IUserRepository _user;
+        private readonly IUserRepository _userRepository;
+        private readonly IMethodRepository _methodRepository;
+        private readonly ITaskRepository _taskRepository;
         private string _username;
         private string _password;
 
-        public AutorizationWindowViewModel(IUserRepository user)
+        public AutorizationWindowViewModel(IUserRepository userRepository, IMethodRepository methodRepository, ITaskRepository taskRepository)
         {
-            _user = user;
+            _userRepository = userRepository;
+            _methodRepository = methodRepository;
+            _taskRepository = taskRepository;
         }
 
         public string Username
@@ -54,9 +58,9 @@ namespace OptimizatonMethods.ViewModels
                             MessageBoxImage.Warning);
                         return;
                     }
-                    if (_user.VerifyUser(Username, Password))
+                    if (_userRepository.VerifyUser(Username, Password))
                     {
-                        var adminPanel = new AdminWindowViewModel();
+                        var adminPanel = new AdminWindowViewModel(_methodRepository, _taskRepository, _userRepository);
                         ShowAdmin(adminPanel);
                         CloseAutorizationWindow();
                     }

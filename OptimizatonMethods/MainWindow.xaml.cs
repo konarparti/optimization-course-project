@@ -13,12 +13,18 @@ namespace OptimizatonMethods
         {
             InitializeComponent();
         }
+
         private void OnAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             if (e.PropertyDescriptor is PropertyDescriptor descriptor)
             {
                 e.Column.Header = descriptor.DisplayName ?? descriptor.Name;
             }
+        }
+
+        private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            FontSize = (ActualHeight + ActualHeight / ActualWidth * ActualWidth) / 61.25;
         }
     }
 }

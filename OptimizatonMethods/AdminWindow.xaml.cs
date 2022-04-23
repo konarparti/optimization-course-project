@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,18 @@ namespace OptimizatonMethods
         public AdminWindow()
         {
             InitializeComponent();
+        }
+
+        private void AdminWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            FontSize = (ActualHeight + ActualHeight / ActualWidth * ActualWidth) / 64;
+        }
+        private void OnAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (e.PropertyDescriptor is PropertyDescriptor descriptor)
+            {
+                e.Column.Header = descriptor.DisplayName ?? descriptor.Name;
+            }
         }
     }
 }

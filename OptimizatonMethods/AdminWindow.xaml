@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OptimizatonMethods"
         mc:Ignorable="d"
-        Title="Панель администратора" Height="450" Width="800" MinHeight="450" MinWidth="800" FontSize="14">
+        Title="Панель администратора" Height="450" Width="800" MinHeight="450" MinWidth="800" FontSize="14" SizeChanged="AdminWindow_OnSizeChanged">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -29,11 +29,11 @@
                 <RowDefinition Height="0.3*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="0.9*"/>
                 <ColumnDefinition Width="0.2*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Margin="10 0 0 0 ">Таблица оптимизационных задач</Label>
-            <DataGrid Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Margin="10 0"></DataGrid>
+            <DataGrid Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Margin="10 0" ItemsSource="{Binding Tasks}" ColumnWidth="Auto" HorizontalScrollBarVisibility="Auto" AutoGeneratingColumn="OnAutoGeneratingColumn"></DataGrid>
             <Button Grid.Row="1" Grid.Column="1" Margin="10 10 10 10">Добавить</Button>
             <Button Grid.Row="2" Grid.Column="1" Margin="10">Изменить</Button>
             <Button Grid.Row="3" Grid.Column="1" Margin="10">Удалить</Button>
@@ -53,7 +53,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="10 0 0 0 ">Таблица методов решения</Label>
-            <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="10 0"></DataGrid>
+            <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="10 0" ItemsSource="{Binding Methods}" ColumnWidth="*" HorizontalScrollBarVisibility="Auto" AutoGeneratingColumn="OnAutoGeneratingColumn"></DataGrid>
             <Button Grid.Row="2" Grid.Column="0" Margin="10 5 5 5">Добавить</Button>
             <Button Grid.Row="2" Grid.Column="1" Margin="5">Изменить</Button>
             <Button Grid.Row="2" Grid.Column="2" Margin="5 5 10 5">Удалить</Button>
@@ -72,7 +72,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="10 0 0 0 ">Таблица пользователей</Label>
-            <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="10 0"></DataGrid>
+            <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="10 0" ItemsSource="{Binding Users}" ColumnWidth="*" HorizontalScrollBarVisibility="Auto" AutoGeneratingColumn="OnAutoGeneratingColumn"></DataGrid>
             <Button Grid.Row="2" Grid.Column="0" Margin="10 5 5 5">Добавить</Button>
             <Button Grid.Row="2" Grid.Column="1" Margin="5">Изменить</Button>
             <Button Grid.Row="2" Grid.Column="2" Margin="5 5 10 5">Удалить</Button>

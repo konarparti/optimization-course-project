@@ -170,7 +170,7 @@ namespace OptimizatonMethods.ViewModels
             {
                 return new RelayCommand(c =>
                 {
-                    var autoriation = new AutorizationWindowViewModel(_userRepository);
+                    var autoriation = new AutorizationWindowViewModel(_userRepository, _methodRepository, _taskRepository);
                     ShowAutorization(autoriation);
                 });
             }

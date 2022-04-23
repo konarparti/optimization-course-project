@@ -26,8 +26,7 @@ namespace OptimizatonMethods
 
         private void AutorizationWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            FontSize = (ActualHeight + ActualWidth) / 44;
-
+            FontSize = (ActualHeight + ActualHeight / ActualWidth * ActualWidth) / 44;
         }
     }
 }

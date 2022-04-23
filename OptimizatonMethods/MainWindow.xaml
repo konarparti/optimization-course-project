@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OptimizatonMethods"
         mc:Ignorable="d"
-        Title="MainWindow" Height="490" Width="1100" MinHeight="490" MinWidth="1100" FontSize="16">
+        Title="MainWindow" Height="490" Width="1100" MinHeight="490" MinWidth="1100" FontSize="16" SizeChanged="MainWindow_OnSizeChanged">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
