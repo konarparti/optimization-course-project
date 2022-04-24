@@ -22,14 +22,16 @@ namespace OptimizatonMethods
         public double? A { get; set; }
         [DisplayName("Количество теплообменных устройств, шт")]
         public double? N { get; set; }
-        [DisplayName("Мин. температура Т1")]
+        [DisplayName("Мин. температура Т1, ℃")]
         public double? T1min { get; set; }
-        [DisplayName("Макс. температура Т1")]
+        [DisplayName("Макс. температура Т1, ℃")]
         public double? T1max { get; set; }
-        [DisplayName("Мин. температура Т2")]
+        [DisplayName("Мин. температура Т2, ℃")]
         public double? T2min { get; set; }
-        [DisplayName("Макс. температура Т2")]
+        [DisplayName("Макс. температура Т2, ℃")]
         public double? T2max { get; set; }
+        [DisplayName("Разница температур, ℃")]
+        public double? DifferenceTemp { get; set; }
         [DisplayName("Себестоимость 1 кг. компонента, у.е.")]
         public double? Price { get; set; }
         [DisplayName("Точность решения, у.е.")]

@@ -24,7 +24,7 @@ namespace OptimizatonMethods
 
         private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            FontSize = (ActualHeight + ActualHeight / ActualWidth * ActualWidth) / 61.25;
+            FontSize = (ActualHeight + ActualHeight / ActualWidth * ActualWidth) / 75;
         }
     }
 }

@@ -20,6 +20,7 @@ namespace OptimizatonMethods.ViewModels
         private IEnumerable<Method> _allMethods;
         private IEnumerable<Task> _allTasks;
         private Task _task;
+        private Task _selectedTask;
         private RelayCommand? _calculateCommand;
         private IEnumerable _dataList;
         private List<Point3D> _point3D = new();
@@ -33,7 +34,6 @@ namespace OptimizatonMethods.ViewModels
             _methodRepository = method;
             _allMethods = _methodRepository.GetAllMethods();
             _allTasks = _taskRepository.GetAllTasks();
-
         }
         #endregion
 
@@ -64,6 +64,17 @@ namespace OptimizatonMethods.ViewModels
             set
             {
                 _task = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Task SelectedTask
+        {
+            get => _selectedTask;
+            set
+            {
+                _selectedTask = value;
+                TaskChanged();
                 OnPropertyChanged();
             }
         }
@@ -122,21 +133,7 @@ namespace OptimizatonMethods.ViewModels
         {
             get
             {
-                return new RelayCommand(c =>
-                {
-                    double[] X = new double[Point3D.Count];
-                    double[] Y = new double[Point3D.Count];
-                    double[] Z = new double[Point3D.Count];
-                    int i = 0;
-                    foreach (var r in Point3D)
-                    {
-                        X[i] = r.X;
-                        Y[i] = r.Y;
-                        Z[i] = r.Z;
-                        i++;
-                    }
-                   
-                });
+                throw new NotImplementedException();
             }
         }
 
@@ -144,23 +141,7 @@ namespace OptimizatonMethods.ViewModels
         {
             get
             {
-                return new RelayCommand(c =>
-                {
-                    
-                    double[] X = new double[Point3D.Count];
-                    double[] Y = new double[Point3D.Count];
-                    double[] Z = new double[Point3D.Count];
-                    int i = 0;
-                    foreach (var r in Point3D)
-                    {
-                        X[i] = r.X;
-                        Y[i] = r.Y;
-                        Z[i] = r.Z;
-                        i++;
-                    }
-                   
-
-                });
+                throw new NotImplementedException();
             }
         }
 
@@ -177,5 +158,10 @@ namespace OptimizatonMethods.ViewModels
         }
 
         #endregion
+
+        private void TaskChanged()
+        {
+            Task = AllTasks.First(x => x.Name == _selectedTask.Name);
+        }
     }
 }
