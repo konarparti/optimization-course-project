@@ -40,7 +40,7 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
             _context.SaveChanges();
         }
 
-        public void DeleteUser(int id)
+        public void DeleteUser(long id)
         {
             var value = _context.Users.Find(id);
             if (value != null)

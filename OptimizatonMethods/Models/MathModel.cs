@@ -8,23 +8,29 @@ namespace OptimizatonMethods.Models
 {
     public class MathModel
     {
-        public int CalculationCount { get; private set; } = 0;
-        private static double Function(double t1, double t2)
+        private readonly Task _task;
+
+        public MathModel(Task task)
         {
-            double alpha = 1;
-            double beta = 1;
-            double mu = 1;
-            double delta = 1;
-            double G = 1;
-            double A = 1;
-            double N = 2;
+            _task = task;
+        }
+        public int CalculationCount { get; private set; } = 0;
+        private double Function(double t1, double t2)
+        {
+            double alpha = (double)_task.Alpha;
+            double beta = (double)_task.Beta;
+            double mu = (double)_task.Mu;
+            double delta = (double)_task.Delta;
+            double G = (double)_task.G;
+            double A = (double)_task.A;
+            double N = (double)_task.N;
 
             return alpha * G * (Math.Pow(t2 - beta * A, N) + mu * Math.Pow(Math.E, Math.Pow(t1 + t2, N)) + delta * (t2 - t1));
         }
 
-        private static bool Conditions(double t1, double t2)
+        private bool Conditions(double t1, double t2)
         {
-            return t1 >= -18 && t1 <= 7 && t2 >= -8 && t2 <= 8 && t2 - t1 >= 2;
+            return t1 >= _task.T1min && t1 <= _task.T1max && t2 >= _task.T2min && t2 <= _task.T2max && t2 - t1 >= _task.DifferenceTemp;
         }
 
         public void Calculate(out List<Point> points, out List<Point3D> points3D)
@@ -36,8 +42,8 @@ namespace OptimizatonMethods.Models
             points = new List<Point>();
             points3D = new List<Point3D>();
 
-            for (double Param2Coord = -8; Param2Coord <= 8; Param2Coord += 0.1)
-                for (double Param1Coord = -18; Param1Coord <= 7; Param1Coord += 0.1)
+            for (double Param2Coord = (double)_task.T2min; Param2Coord <= (double)_task.T2max; Param2Coord += 0.1)
+                for (double Param1Coord = (double)_task.T1min; Param1Coord <= (double)_task.T1max; Param1Coord += 0.1)
                 {
                     if (!Conditions(Param1Coord, Param2Coord))
                         continue;

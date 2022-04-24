@@ -17,7 +17,7 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
             return _context.Tasks.ToList();
         }
 
-        public Task GetTask(int id)
+        public Task GetTask(long id)
         {
             return _context.Tasks.First(t => t.Id == id);
         }
@@ -50,7 +50,7 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
             _context.SaveChanges();
         }
 
-        public void DeleteTask(int id)
+        public void DeleteTask(long id)
         {
             var value = _context.Tasks.Find(id);
             if (value != null)

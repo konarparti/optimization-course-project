@@ -9,7 +9,7 @@ namespace OptimizatonMethods.Models.Data.Abstract
         void SaveUser(User user);
         
         //TODO: возможно стоит возвращать удаленного user 
-        void DeleteUser(int id);
+        void DeleteUser(long id);
 
     }
 }

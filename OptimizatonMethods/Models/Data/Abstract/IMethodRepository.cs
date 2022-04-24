@@ -5,8 +5,8 @@ namespace OptimizatonMethods.Models.Data.Abstract
     public interface IMethodRepository
     {
         IEnumerable<Method> GetAllMethods();
-        Method GetMethod(int id);
+        Method GetMethod(long id);
         void SaveMethod(Method method);
-        void DeleteMethod(int id);
+        void DeleteMethod(long id);
     }
 }

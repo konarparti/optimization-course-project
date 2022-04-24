@@ -89,16 +89,6 @@ namespace OptimizatonMethods.ViewModels
             }
         }
 
-        public List<Point3D> Point3D
-        {
-            get =>_point3D;
-            set
-            {
-                _point3D = value;
-                OnPropertyChanged();
-            }
-        }
-
         #endregion
 
         #region Command
@@ -109,7 +99,7 @@ namespace OptimizatonMethods.ViewModels
             {
                 return _calculateCommand ??= new RelayCommand(c =>
                 {
-                    var calc = new MathModel();
+                    var calc = new MathModel(Task);
                     calc.Calculate(out var points2D, out var points3D);
                     DataList = points3D;
 
@@ -124,7 +114,6 @@ namespace OptimizatonMethods.ViewModels
                                     $"Температура в змеевике Т1, С: {points3D.Find(x => x.Z == temp.Min()).X}\n " +
                                     $"Температура в диффузоре Т2, С: {points3D.Find(x => x.Z == temp.Min()).Y}");
 
-                    Point3D = points3D;
                 });
             }
         }

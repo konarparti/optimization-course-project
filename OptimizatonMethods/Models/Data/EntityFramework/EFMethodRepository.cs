@@ -17,7 +17,7 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
             return _context.Method.ToList();
         }
 
-        public Method GetMethod(int id)
+        public Method GetMethod(long id)
         {
             return _context.Method.First(m => m.Id == id);
         }
@@ -39,7 +39,7 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
 
         }
 
-        public void DeleteMethod(int id)
+        public void DeleteMethod(long id)
         {
             var value = _context.Method.Find(id);
             if (value != null)

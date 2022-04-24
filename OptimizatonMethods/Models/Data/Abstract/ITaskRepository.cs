@@ -5,9 +5,9 @@ namespace OptimizatonMethods.Models.Data.Abstract
     public interface ITaskRepository
     {
         IEnumerable<Task> GetAllTasks();
-        Task GetTask(int id);
+        Task GetTask(long id);
         void SaveTask(Task task);
-        void DeleteTask(int id);
+        void DeleteTask(long id);
 
     }
 }

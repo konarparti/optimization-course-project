@@ -16,9 +16,9 @@ namespace OptimizatonMethods.ViewModels
     {
         #region Variables
 
-        private readonly IMethodRepository _method;
-        private readonly ITaskRepository _task;
-        private readonly IUserRepository _user;
+        private readonly IMethodRepository _methodRepository;
+        private readonly ITaskRepository _taskRepository;
+        private readonly IUserRepository _userRepository;
         private IEnumerable<Method> _methods;
         private IEnumerable<Task> _tasks;
         private IEnumerable<User> _users;
@@ -29,15 +29,15 @@ namespace OptimizatonMethods.ViewModels
         #endregion
 
         #region Constructors
-        public AdminWindowViewModel(IMethodRepository method, ITaskRepository task, IUserRepository user)
+        public AdminWindowViewModel(IMethodRepository methodRepository, ITaskRepository task, IUserRepository user)
         {
-            _method = method;
-            _task = task;
-            _user = user;
+            _methodRepository = methodRepository;
+            _taskRepository = task;
+            _userRepository = user;
 
-            _methods = _method.GetAllMethods();
-            _tasks = _task.GetAllTasks();
-            _users = _user.GetAllUsers();
+            _methods = _methodRepository.GetAllMethods();
+            _tasks = _taskRepository.GetAllTasks();
+            _users = _userRepository.GetAllUsers();
         }
 
         #endregion
@@ -150,8 +150,11 @@ namespace OptimizatonMethods.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show($"Действительно удалить {_selectedTask.Name}?", "Информация",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
+                        if (MessageBox.Show($"Вы уверенны что хотите удалить {_selectedTask.Name} из библиотеки заданий?", "Информация",
+                                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                        {
+                            _taskRepository.DeleteTask((int)_selectedTask.Id);
+                        }
                     }
                 
                 });
@@ -202,8 +205,11 @@ namespace OptimizatonMethods.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show($"Действительно удалить {_selectedMethod.Name}?", "Информация",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
+                        if (MessageBox.Show($"Вы уверены что хотите удалить {_selectedMethod.Name} из библиотеки методов?", "Информация",
+                                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                        {
+                            _methodRepository.DeleteMethod((int)_selectedMethod.Id);
+                        }
                     }
 
                 });
@@ -215,9 +221,10 @@ namespace OptimizatonMethods.ViewModels
         {
             get
             {
-                return new RelayCommand(c =>
+                return new RelayCommand(  c =>
                 {
-
+                    var addUser = new AddUserWindowViewModel(_userRepository, null, this);
+                    ShowAddUser(addUser, "Добавление пользователя");
                 });
             }
         }
@@ -235,8 +242,8 @@ namespace OptimizatonMethods.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show($"{_selectedUser.Id}\n {_selectedUser.Username}", "Информация",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
+                        var addUser = new AddUserWindowViewModel(_userRepository, _selectedUser, this);
+                        ShowAddUser(addUser, "Изменение пользователя");
                     }
                 });
             }
@@ -255,14 +262,29 @@ namespace OptimizatonMethods.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show($"Действительно удалить {_selectedUser.Username}?", "Информация",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
+                        if (MessageBox.Show(
+                                $"Вы уверены что хотите удалить пользователя {_selectedUser.Username} из библиотеки пользователей?",
+                                "Информация",
+                                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                        {
+                            _userRepository.DeleteUser(_selectedUser.Id);
+                        }
                     }
+
+                    UpdateUsersProp();
 
                 });
             }
         }
         #endregion
 
+        #region Functions
+
+        public void UpdateUsersProp()
+        {
+            Users = _userRepository.GetAllUsers();
+        }
+
+        #endregion
     }
 }

@@ -21,7 +21,7 @@ namespace OptimizatonMethods.Services
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        public void OnPropertyChanged(string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
@@ -38,6 +38,8 @@ namespace OptimizatonMethods.Services
         private AutorizationWindow _autorizationWindow = null;
 
         private AdminWindow _adminWindow = null;
+
+        private AddUserWindow _addUserWindow = null;
 
         protected virtual void Closed()
         {
@@ -58,6 +60,19 @@ namespace OptimizatonMethods.Services
                 result = true;
             }
 
+            return result;
+        }
+
+        public bool CloseAddUserWindow()
+        {
+
+            var result = false;
+            if (_addUserWindow != null)
+            {
+                _addUserWindow.Close();
+                _addUserWindow = null;
+                result = true;
+            }
             return result;
         }
 
@@ -85,6 +100,17 @@ namespace OptimizatonMethods.Services
             viewModel._adminWindow.Closed += (sender, e) => Closed();
             viewModel._adminWindow.Show();
 
+        }
+        protected void ShowAddUser(ViewModelBase viewModel, string title)
+        {
+            viewModel._addUserWindow = new AddUserWindow()
+            {
+                DataContext = viewModel,
+                Title = title
+            };
+            viewModel._addUserWindow.Closed += (sender, e) => Closed();
+            viewModel._addUserWindow.Show();
+            
         }
     }
 }
