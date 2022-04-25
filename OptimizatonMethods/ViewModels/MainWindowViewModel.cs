@@ -140,7 +140,7 @@ namespace OptimizatonMethods.ViewModels
             {
                 return new RelayCommand(c =>
                 {
-                    var autoriation = new AutorizationWindowViewModel(_userRepository, _methodRepository, _taskRepository);
+                    var autoriation = new AutorizationWindowViewModel(_userRepository, _methodRepository, _taskRepository, this);
                     ShowAutorization(autoriation);
                 });
             }
@@ -151,6 +151,11 @@ namespace OptimizatonMethods.ViewModels
         private void TaskChanged()
         {
             Task = AllTasks.First(x => x.Name == _selectedTask.Name);
+        }
+
+        public void UpdateMethod()
+        {
+            AllMethods = _methodRepository.GetAllMethods();
         }
     }
 }

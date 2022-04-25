@@ -19,17 +19,19 @@ namespace OptimizatonMethods.ViewModels
         private readonly IUserRepository _userRepository;
         private readonly IMethodRepository _methodRepository;
         private readonly ITaskRepository _taskRepository;
+        private readonly MainWindowViewModel _viewModelBase;
         private string _username;
         private string _password;
 
         #endregion
 
         #region Constructors
-        public AutorizationWindowViewModel(IUserRepository userRepository, IMethodRepository methodRepository, ITaskRepository taskRepository)
+        public AutorizationWindowViewModel(IUserRepository userRepository, IMethodRepository methodRepository, ITaskRepository taskRepository, MainWindowViewModel viewModelBase)
         {
             _userRepository = userRepository;
             _methodRepository = methodRepository;
             _taskRepository = taskRepository;
+            _viewModelBase = viewModelBase;
         }
 
         #endregion
@@ -72,7 +74,7 @@ namespace OptimizatonMethods.ViewModels
                     }
                     if (_userRepository.VerifyUser(Username, Password))
                     {
-                        var adminPanel = new AdminWindowViewModel(_methodRepository, _taskRepository, _userRepository);
+                        var adminPanel = new AdminWindowViewModel(_methodRepository, _taskRepository, _userRepository, _viewModelBase);
                         ShowAdmin(adminPanel);
                         CloseAutorizationWindow();
                     }

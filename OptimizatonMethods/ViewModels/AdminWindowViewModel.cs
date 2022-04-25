@@ -19,6 +19,7 @@ namespace OptimizatonMethods.ViewModels
         private readonly IMethodRepository _methodRepository;
         private readonly ITaskRepository _taskRepository;
         private readonly IUserRepository _userRepository;
+        private readonly MainWindowViewModel _viewModelBase;
         private IEnumerable<Method> _methods;
         private IEnumerable<Task> _tasks;
         private IEnumerable<User> _users;
@@ -29,11 +30,12 @@ namespace OptimizatonMethods.ViewModels
         #endregion
 
         #region Constructors
-        public AdminWindowViewModel(IMethodRepository methodRepository, ITaskRepository task, IUserRepository user)
+        public AdminWindowViewModel(IMethodRepository methodRepository, ITaskRepository task, IUserRepository user, MainWindowViewModel viewModelBase)
         {
             _methodRepository = methodRepository;
             _taskRepository = task;
             _userRepository = user;
+            _viewModelBase = viewModelBase;
 
             _methods = _methodRepository.GetAllMethods();
             _tasks = _taskRepository.GetAllTasks();
@@ -157,6 +159,7 @@ namespace OptimizatonMethods.ViewModels
                         }
                     }
                 
+                    UpdateTasksProp();
                 });
             }
         }
@@ -167,7 +170,8 @@ namespace OptimizatonMethods.ViewModels
             {
                 return new RelayCommand(c =>
                 {
-
+                    var addMethod = new AddMethodWindowViewModel(_methodRepository, null, this);
+                    ShowAddMethod(addMethod, "Добавление метода");
                 });
             }
         }
@@ -185,8 +189,8 @@ namespace OptimizatonMethods.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show($"{_selectedMethod.Id}\n {_selectedMethod.Name}", "Информация",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
+                        var addMethod = new AddMethodWindowViewModel(_methodRepository, _selectedMethod, this);
+                        ShowAddMethod(addMethod, "Изменение метода");
                     }
                 });
             }
@@ -212,6 +216,7 @@ namespace OptimizatonMethods.ViewModels
                         }
                     }
 
+                    UpdateMethodsProp();
                 });
             }
         }
@@ -283,6 +288,15 @@ namespace OptimizatonMethods.ViewModels
         public void UpdateUsersProp()
         {
             Users = _userRepository.GetAllUsers();
+        }
+        public void UpdateMethodsProp()
+        {
+            Methods = _methodRepository.GetAllMethods();
+            _viewModelBase.UpdateMethod();
+        }
+        public void UpdateTasksProp()
+        {
+            Tasks = _taskRepository.GetAllTasks();
         }
 
         #endregion
