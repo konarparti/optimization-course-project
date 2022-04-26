@@ -43,6 +43,7 @@ namespace OptimizatonMethods.Services
 
         private AddMethodWindow _addMethodWindow = null;
 
+        private AddTaskWindow _addTaskWindow = null;
         protected virtual void Closed()
         {
 
@@ -85,6 +86,19 @@ namespace OptimizatonMethods.Services
             {
                 _addMethodWindow.Close();
                 _addMethodWindow = null;
+                result = true;
+            }
+            return result;
+        }
+
+        public bool CloseAddTaskWindow()
+        {
+
+            var result = false;
+            if (_addTaskWindow != null)
+            {
+                _addTaskWindow.Close();
+                _addTaskWindow = null;
                 result = true;
             }
             return result;
@@ -135,6 +149,17 @@ namespace OptimizatonMethods.Services
             };
             viewModel._addMethodWindow.Closed += (sender, e) => Closed();
             viewModel._addMethodWindow.Show();
+
+        }
+        protected void ShowAddTask(ViewModelBase viewModel, string title)
+        {
+            viewModel._addTaskWindow = new AddTaskWindow()
+            {
+                DataContext = viewModel,
+                Title = title
+            };
+            viewModel._addTaskWindow.Closed += (sender, e) => Closed();
+            viewModel._addTaskWindow.Show();
 
         }
     }

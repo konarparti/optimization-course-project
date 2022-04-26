@@ -157,5 +157,9 @@ namespace OptimizatonMethods.ViewModels
         {
             AllMethods = _methodRepository.GetAllMethods();
         }
+        public void UpdateTask()
+        {
+            AllTasks = _taskRepository.GetAllTasks();
+        }
     }
 }

@@ -114,7 +114,8 @@ namespace OptimizatonMethods.ViewModels
             {
                 return new RelayCommand(c =>
                 {
-                    
+                    var task = new AddTaskWindowViewModel(_taskRepository, null, this);
+                    ShowAddTask(task, "Добавление задания");
                 });
             }
         }
@@ -131,9 +132,9 @@ namespace OptimizatonMethods.ViewModels
                             MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
-                    {
-                        MessageBox.Show($"{_selectedTask.Id}\n {_selectedTask.Name}", "Информация",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
+                    {                       
+                        var task = new AddTaskWindowViewModel(_taskRepository, _selectedTask, this);
+                        ShowAddTask(task, "Изменение задания");
                     }
                 });
             }
@@ -295,8 +296,9 @@ namespace OptimizatonMethods.ViewModels
             _viewModelBase.UpdateMethod();
         }
         public void UpdateTasksProp()
-        {
+        {            
             Tasks = _taskRepository.GetAllTasks();
+            _viewModelBase.UpdateTask();
         }
 
         #endregion

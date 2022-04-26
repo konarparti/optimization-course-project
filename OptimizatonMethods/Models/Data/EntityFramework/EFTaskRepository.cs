@@ -45,6 +45,7 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
                     dbEntry.T1max = task.T1max;
                     dbEntry.T2min = task.T2min;
                     dbEntry.T2max = task.T2max;
+                    dbEntry.DifferenceTemp = task.DifferenceTemp;
                 }
             }
             _context.SaveChanges();
