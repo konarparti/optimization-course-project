@@ -32,7 +32,7 @@ namespace OptimizatonMethods.ViewModels
             _userRepository = user;
             _taskRepository = task;
             _methodRepository = method;
-            _allMethods = _methodRepository.GetAllMethods();
+            _allMethods = _methodRepository.GetAllMethods().Where(m => m.Activated?.ToLower() == "true");
             _allTasks = _taskRepository.GetAllTasks();
         }
         #endregion
@@ -155,7 +155,7 @@ namespace OptimizatonMethods.ViewModels
 
         public void UpdateMethod()
         {
-            AllMethods = _methodRepository.GetAllMethods();
+            AllMethods = _methodRepository.GetAllMethods().Where(m => m.Activated?.ToLower() == "true");
         }
         public void UpdateTask()
         {
