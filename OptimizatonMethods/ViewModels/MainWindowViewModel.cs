@@ -122,7 +122,14 @@ namespace OptimizatonMethods.ViewModels
         {
             get
             {
-                throw new NotImplementedException();
+                return new RelayCommand(r =>
+                {
+                    var test = new Chart2DWindow(DataList as List<Point3D>);
+                    test.Show();
+                });
+                //var chart2d = new Chart2DWindowViewModel();
+                //ShowChart2D(chart2d);
+
             }
         }
 

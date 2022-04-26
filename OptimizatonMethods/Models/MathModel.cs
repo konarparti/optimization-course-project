@@ -49,7 +49,7 @@ namespace OptimizatonMethods.Models
                         continue;
                     double val = Function(Param1Coord, Param2Coord);
                     CalculationCount++;
-                    if (val < 1_000_000)
+                    if (val < 10)
                     {
 
                         if (funcMin - val > 0.001)

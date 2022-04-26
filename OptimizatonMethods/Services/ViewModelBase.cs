@@ -44,6 +44,7 @@ namespace OptimizatonMethods.Services
         private AddMethodWindow _addMethodWindow = null;
 
         private AddTaskWindow _addTaskWindow = null;
+
         protected virtual void Closed()
         {
 
@@ -162,5 +163,7 @@ namespace OptimizatonMethods.Services
             viewModel._addTaskWindow.Show();
 
         }
+        
+        
     }
 }
