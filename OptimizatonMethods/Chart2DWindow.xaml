@@ -16,9 +16,7 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <chartDirector:WPFChartViewer x:Name="WPFChartViewer1" Width="575" Height="525" Margin="8,8,0,0" Grid.Row="0" Grid.Column="0" 
-                                      MouseMovePlotArea="WPFChartViewer1_MouseMovePlotArea" />
-        <chartDirector:WPFChartViewer x:Name="crossSectionViewerX" Width="100" Height="525" Margin="8,8,8,0" Grid.Row="0" Grid.Column="1" />
-        <chartDirector:WPFChartViewer x:Name="crossSectionViewerY" Width="575" Height="100" Margin="8,8,0,8" Grid.Row="1" Grid.Column="0" />
+        <chartDirector:WPFChartViewer x:Name="WPFChartViewer1" Width="600" Height="500" Margin="8,8,0,0" Grid.Row="0" Grid.Column="0" 
+                                       />
     </Grid>
 </Window>

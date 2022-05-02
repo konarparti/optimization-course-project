@@ -100,7 +100,7 @@ namespace OptimizatonMethods.ViewModels
                 return _calculateCommand ??= new RelayCommand(c =>
                 {
                     var calc = new MathModel(Task);
-                    calc.Calculate(out var points2D, out var points3D);
+                    calc.Calculate(out var points3D);
                     DataList = points3D;
 
                     var temp = new List<double>();
@@ -124,11 +124,10 @@ namespace OptimizatonMethods.ViewModels
             {
                 return new RelayCommand(r =>
                 {
-                    var test = new Chart2DWindow(DataList as List<Point3D>);
+                    var test = new Chart2DWindow(DataList as List<Point3D>, Task);
                     test.Show();
                 });
-                //var chart2d = new Chart2DWindowViewModel();
-                //ShowChart2D(chart2d);
+                
 
             }
         }
@@ -137,7 +136,11 @@ namespace OptimizatonMethods.ViewModels
         {
             get
             {
-                throw new NotImplementedException();
+                return new RelayCommand(r =>
+                {
+                    var test = new Chart3DWindow(DataList as List<Point3D>, Task);
+                    test.Show();
+                });
             }
         }
 
