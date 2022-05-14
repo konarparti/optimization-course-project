@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OptimizatonMethods"
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1400" MinHeight="600" MinWidth="1400" FontSize="16" SizeChanged="MainWindow_OnSizeChanged">
     <Grid>
@@ -20,7 +21,6 @@
         <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <MenuItem Header="Файл">
                 <MenuItem Header="Сменить пользователя" Command="{Binding AutorizationCommand}"/>
-                <MenuItem Header="2D график" Command="{Binding TwoDChartCommand}"/>
                 <MenuItem Header="3D график" Command="{Binding ThreeDChartCommand}"/>
             </MenuItem>
             <MenuItem Header="О программе"/>
@@ -129,7 +129,16 @@
             </Grid>
         </Grid>
 
-        <DataGrid Grid.Row="1" Grid.Column="1" ItemsSource="{Binding DataList}" AutoGenerateColumns="True" AutoGeneratingColumn="OnAutoGeneratingColumn" ColumnWidth="*"></DataGrid>
+        <TabControl Grid.Row="1" Grid.Column="1">
+            <TabItem Header="Таблица">
+                <DataGrid ItemsSource="{Binding DataList}" AutoGenerateColumns="True" AutoGeneratingColumn="OnAutoGeneratingColumn" ColumnWidth="*"></DataGrid>
+            </TabItem>
+            <TabItem Header="2D-график">
+                <TabItem.Content>
+                    <oxy:PlotView MinHeight="350" Model="{Binding MyModel}"></oxy:PlotView>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
 
     </Grid>
 </Window>

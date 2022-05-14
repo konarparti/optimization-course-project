@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using OptimizatonMethods.Services;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 using WPF_MVVM_Classes;
 using ViewModelBase = OptimizatonMethods.Services.ViewModelBase;
 
@@ -24,6 +27,8 @@ namespace OptimizatonMethods.ViewModels
         private RelayCommand? _calculateCommand;
         private IEnumerable _dataList;
         private List<Point3D> _point3D = new();
+        private PlotModel _myModel;
+
         #endregion
 
         #region Constructors
@@ -88,7 +93,16 @@ namespace OptimizatonMethods.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
+        public PlotModel MyModel
+        {
+            get => _myModel;
+            set
+            {
+                _myModel = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region Command
@@ -110,6 +124,35 @@ namespace OptimizatonMethods.ViewModels
                         temp.Add(item.Z);
                     }
 
+                    _myModel = new PlotModel { Title = "S = F(T1, T2)", TitleFontSize = 16 };
+                    Func<double, double, double> peaks = (x, y) => calc.Function(x,y) > 1000 ? 1000 : calc.Function(x,y);
+
+                    double x0 = (double)Task.T1min;
+                    double x1 =(double)Task.T1max;
+                    double y0 =(double)Task.T2min;
+                    double y1 =(double)Task.T2max;
+
+                    var xx = ArrayBuilder.CreateVector(x0, x1, 100);
+                    var yy = ArrayBuilder.CreateVector(y0, y1, 100);
+                    var peaksData = ArrayBuilder.Evaluate(peaks, xx, yy);
+
+                    var cs = new ContourSeries
+                    {
+                        Color = OxyColors.Black,
+                        LabelBackground = OxyColors.White,
+                        ColumnCoordinates = yy,
+                        RowCoordinates = xx,
+                        Data = peaksData,
+                        TrackerFormatString = "T1 = {2:0.00}, T2 = {4:0.00}" + Environment.NewLine + "S = {6:0.00}"
+                    };
+
+                    _myModel.Series.Add(cs);
+
+                    _myModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Температура на змеевике, С" });
+                    _myModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Температура на диффузоре, С" });
+
+                    MyModel = _myModel;
+
                     MessageBox.Show($"Минимальная себестоимость, у.е.: {temp.Min()}\n " +
                                     $"Температура в змеевике Т1, С: {points3D.Find(x => x.Z == temp.Min()).X}\n " +
                                     $"Температура в диффузоре Т2, С: {points3D.Find(x => x.Z == temp.Min()).Y}");
@@ -124,8 +167,7 @@ namespace OptimizatonMethods.ViewModels
             {
                 return new RelayCommand(r =>
                 {
-                    var test = new Chart2DWindow(DataList as List<Point3D>, Task);
-                    test.Show();
+                    
                 });
                 
 

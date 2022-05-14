@@ -116,21 +116,17 @@ namespace OptimizatonMethods
             // Set contour lines to semi-transparent white (0x7fffffff)
             c.setContourColor(0x7fffffff);
 
-            // Add a color axis (the legend) in which the left center is anchored at (620, 250). Set
-            // the length to 200 pixels and the labels on the right side.
-            c.setColorAxis(620, 250, Chart.Left, 200, Chart.Right);
+           
 
             // Set the x, y and z axis titles using 12 pt Arial Bold font
-            c.xAxis().setTitle("X Title<*br*>Placeholder", "Arial Bold", 12);
-            c.yAxis().setTitle("Y Title<*br*>Placeholder", "Arial Bold", 12);
-            c.zAxis().setTitle("Z Title Placeholder", "Arial Bold", 12);
+            c.xAxis().setTitle("T1", "Arial Bold", 12);
+            c.yAxis().setTitle("T2", "Arial Bold", 12);
+            c.zAxis().setTitle("S = F(T1,T2)", "Arial Bold", 12);
 
             // Output the chart
             viewer.Chart = c;
 
-            //include tool tip for the chart
-            viewer.ImageMap = c.getHTMLImageMap("clickable", "",
-                "title='<*cdml*>X: {x|2}<*br*>Y: {y|2}<*br*>Z: {z|2}'");
+           
         }
 
         // 3D view angles
