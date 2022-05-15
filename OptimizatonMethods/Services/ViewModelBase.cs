@@ -45,6 +45,8 @@ namespace OptimizatonMethods.Services
 
         private AddTaskWindow _addTaskWindow = null;
 
+        private GeneticAlgSettingWindow _algSettingWindow = null;
+
         protected virtual void Closed()
         {
 
@@ -100,6 +102,18 @@ namespace OptimizatonMethods.Services
             {
                 _addTaskWindow.Close();
                 _addTaskWindow = null;
+                result = true;
+            }
+            return result;
+        }
+        public bool CloseGeneticAlgSettingWindow()
+        {
+
+            var result = false;
+            if (_algSettingWindow != null)
+            {
+                _algSettingWindow.Close();
+                _algSettingWindow = null;
                 result = true;
             }
             return result;
@@ -163,7 +177,17 @@ namespace OptimizatonMethods.Services
             viewModel._addTaskWindow.Show();
 
         }
-        
-        
+        protected void ShowGeneticAlgSettingWindow(ViewModelBase viewModel, string title)
+        {
+            viewModel._algSettingWindow = new GeneticAlgSettingWindow()
+            {
+                DataContext = viewModel,
+                Title = title
+            };
+            viewModel._algSettingWindow.Closed += (sender, e) => Closed();
+            viewModel._algSettingWindow.Show();
+
+        }
+
     }
 }

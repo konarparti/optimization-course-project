@@ -23,7 +23,8 @@ namespace OptimizatonMethods.ViewModels
         private IEnumerable<Method> _allMethods;
         private IEnumerable<Task> _allTasks;
         private Task _task;
-        private Task _selectedTask;
+        private Task? _selectedTask;
+        private Method? _selectedMethod;
         private RelayCommand? _calculateCommand;
         private IEnumerable _dataList;
         private List<Point3D> _point3D = new();
@@ -73,13 +74,23 @@ namespace OptimizatonMethods.ViewModels
             }
         }
 
-        public Task SelectedTask
+        public Task? SelectedTask
         {
             get => _selectedTask;
             set
             {
                 _selectedTask = value;
                 TaskChanged();
+                OnPropertyChanged();
+            }
+        }
+
+        public Method? SelectedMethod
+        {
+            get => _selectedMethod;
+            set
+            {
+                _selectedMethod = value;
                 OnPropertyChanged();
             }
         }
@@ -93,7 +104,7 @@ namespace OptimizatonMethods.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public PlotModel MyModel
         {
             get => _myModel;
@@ -113,49 +124,65 @@ namespace OptimizatonMethods.ViewModels
             {
                 return _calculateCommand ??= new RelayCommand(c =>
                 {
-                    var calc = new MathModel(Task);
-                    calc.Calculate(out var points3D);
-                    DataList = points3D;
-
-                    var temp = new List<double>();
-
-                    foreach (var item in points3D)
+                    CheckValues(out var errors);
+                    if (errors != string.Empty)
                     {
-                        temp.Add(item.Z);
+                        MessageBox.Show(errors, "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                    var calc = new MathModel(Task);
+                    
+                    if (SelectedMethod.Name == "Генетический алгоритм")
+                    {
+                        var genAlg = new GeneticAlgSettingWindowViewModel(Task);
+                        ShowGeneticAlgSettingWindow(genAlg, "Настройка генетического алгоритма");
                     }
 
-                    _myModel = new PlotModel { Title = "S = F(T1, T2)", TitleFontSize = 16 };
-                    Func<double, double, double> peaks = (x, y) => calc.Function(x,y) > 1000 ? 1000 : calc.Function(x,y);
-
-                    double x0 = (double)Task.T1min;
-                    double x1 =(double)Task.T1max;
-                    double y0 =(double)Task.T2min;
-                    double y1 =(double)Task.T2max;
-
-                    var xx = ArrayBuilder.CreateVector(x0, x1, 100);
-                    var yy = ArrayBuilder.CreateVector(y0, y1, 100);
-                    var peaksData = ArrayBuilder.Evaluate(peaks, xx, yy);
-
-                    var cs = new ContourSeries
+                    if (SelectedMethod.Name == "Метод сканирования")
                     {
-                        Color = OxyColors.Black,
-                        LabelBackground = OxyColors.White,
-                        ColumnCoordinates = yy,
-                        RowCoordinates = xx,
-                        Data = peaksData,
-                        TrackerFormatString = "T1 = {2:0.00}, T2 = {4:0.00}" + Environment.NewLine + "S = {6:0.00}"
-                    };
+                        calc.Calculate(out var points3D);
+                        DataList = points3D;
 
-                    _myModel.Series.Add(cs);
+                        var temp = new List<double>();
 
-                    _myModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Температура на змеевике, С" });
-                    _myModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Температура на диффузоре, С" });
+                        foreach (var item in points3D)
+                        {
+                            temp.Add(item.Z);
+                        }
 
-                    MyModel = _myModel;
+                        _myModel = new PlotModel { Title = "S = F(T1, T2)", TitleFontSize = 16 };
+                        Func<double, double, double> peaks = (x, y) => calc.Function(x, y) > 1000 ? 1000 : calc.Function(x, y);
 
-                    MessageBox.Show($"Минимальная себестоимость, у.е.: {temp.Min()}\n " +
-                                    $"Температура в змеевике Т1, С: {points3D.Find(x => x.Z == temp.Min()).X}\n " +
-                                    $"Температура в диффузоре Т2, С: {points3D.Find(x => x.Z == temp.Min()).Y}");
+                        double x0 = (double)Task.T1min;
+                        double x1 = (double)Task.T1max;
+                        double y0 = (double)Task.T2min;
+                        double y1 = (double)Task.T2max;
+
+                        var xx = ArrayBuilder.CreateVector(x0, x1, 100);
+                        var yy = ArrayBuilder.CreateVector(y0, y1, 100);
+                        var peaksData = ArrayBuilder.Evaluate(peaks, xx, yy);
+
+                        var cs = new ContourSeries
+                        {
+                            Color = OxyColors.Black,
+                            LabelBackground = OxyColors.White,
+                            ColumnCoordinates = yy,
+                            RowCoordinates = xx,
+                            Data = peaksData,
+                            TrackerFormatString = "T1 = {2:0.00}, T2 = {4:0.00}" + Environment.NewLine + "S = {6:0.00}"
+                        };
+
+                        _myModel.Series.Add(cs);
+
+                        _myModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Температура на змеевике, С" });
+                        _myModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Температура на диффузоре, С" });
+
+                        MyModel = _myModel;
+
+                        MessageBox.Show($"Минимальная себестоимость, у.е.: {temp.Min()}\n " +
+                                        $"Температура в змеевике Т1, С: {points3D.Find(x => x.Z == temp.Min()).X}\n " +
+                                        $"Температура в диффузоре Т2, С: {points3D.Find(x => x.Z == temp.Min()).Y}");
+                    }
 
                 });
             }
@@ -167,9 +194,9 @@ namespace OptimizatonMethods.ViewModels
             {
                 return new RelayCommand(r =>
                 {
-                    
+
                 });
-                
+
 
             }
         }
@@ -199,6 +226,15 @@ namespace OptimizatonMethods.ViewModels
         }
 
         #endregion
+
+        private void CheckValues(out string errors)
+        {
+            errors = string.Empty;
+            if (SelectedMethod == null)
+                errors += "Вы не выбрали метод\n";
+            if (SelectedTask == null)
+                errors += "Вы не выбрали задание\n";
+        }
 
         private void TaskChanged()
         {
