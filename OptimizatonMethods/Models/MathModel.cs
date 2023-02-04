@@ -47,10 +47,13 @@ namespace OptimizatonMethods.Models
             t2max = (double)_task.T2max;
             tempDiff = (double)_task.DifferenceTemp;
         }
+
         public int CalculationCount { get; private set; } = 0;
+
         public double Function(double t1, double t2)
         {
-            return (double)(_task.Price * alpha * G * (Math.Pow(t2 - beta * A, N) + mu * Math.Pow(Math.Exp(t1 + t2), N) + delta * (t2 - t1)));
+            return (double)(_task.Price * alpha * G *
+                            (Math.Pow(t2 - beta * A, N) + mu * Math.Pow(Math.Exp(t1 + t2), N) + delta * (t2 - t1)));
         }
 
         private bool Conditions(double t1, double t2)
@@ -108,18 +111,23 @@ namespace OptimizatonMethods.Models
                     {
                         //MessageBox.Show($"t1 {t1} t2 {t2} Z {value}");
                     }
+
                     points3D.Add(new Point3D(Math.Round(t1, 2), Math.Round(t2, 2), Math.Round(value, 2)));
 
                 }
 
             var valuesListTemp = points3D.Select(item => item.Z).ToList();
             values = valuesListTemp;
-            return new Point(points3D.Find(x => x.Z == valuesListTemp.Min()).X, points3D.Find(x => x.Z == valuesListTemp.Min()).Y);
+            return new Point(points3D.Find(x => x.Z == valuesListTemp.Min()).X,
+                points3D.Find(x => x.Z == valuesListTemp.Min()).Y);
         }
 
-        [SuppressMessage("ReSharper.DPA", "DPA0002: Excessive memory allocations in SOH", MessageId = "type: OptimizatonMethods.Models.Point3D")]
-        [SuppressMessage("ReSharper.DPA", "DPA0003: Excessive memory allocations in LOH", MessageId = "type: OptimizatonMethods.Models.Point3D[]")]
-        [SuppressMessage("ReSharper.DPA", "DPA0003: Excessive memory allocations in LOH", MessageId = "type: OptimizatonMethods.Models.Point[]")]
+        [SuppressMessage("ReSharper.DPA", "DPA0002: Excessive memory allocations in SOH",
+            MessageId = "type: OptimizatonMethods.Models.Point3D")]
+        [SuppressMessage("ReSharper.DPA", "DPA0003: Excessive memory allocations in LOH",
+            MessageId = "type: OptimizatonMethods.Models.Point3D[]")]
+        [SuppressMessage("ReSharper.DPA", "DPA0003: Excessive memory allocations in LOH",
+            MessageId = "type: OptimizatonMethods.Models.Point[]")]
         public void GeneticAlg(int count)
         {
             var rand = new Random();
@@ -245,7 +253,7 @@ namespace OptimizatonMethods.Models
                     }
                 }
 
-                
+
                 foreach (var value in population)
                 {
                     var v = Function(value.X, value.Y);
@@ -260,12 +268,332 @@ namespace OptimizatonMethods.Models
                         return -1;
                     return 0;
                 }); // сортировка по возрастанию
-                
+
 
             }
-            MessageBox.Show($" Температура в змеевике Т1, С: {Math.Round(values[0].X,2)}\n " +
-                            $"Температура в диффузоре Т2, С: {Math.Round(values[0].Y,2)} \n " +
+
+            MessageBox.Show($" Температура в змеевике Т1, С: {Math.Round(values[0].X, 2)}\n " +
+                            $"Температура в диффузоре Т2, С: {Math.Round(values[0].Y, 2)} \n " +
                             $"Минимальная себестоимость, у.е.:{Math.Round(values[0].Z, 2)}");
         }
+
+        #region Box
+
+        /// <summary>
+        /// Хранение значений комплекса для вывода на экран
+        /// </summary>
+        public struct Complex
+        {
+            /// <summary>
+            /// номер комплекса
+            /// </summary>
+            public int NumberComplex;
+
+            /// <summary>
+            /// точки в комплекса 
+            /// </summary>
+            public double PointX;
+
+            public double PointY;
+
+            /// <summary>
+            /// Значения точек
+            /// </summary>
+            public double Func;
+        }
+
+        public List<Complex> Complices;
+
+        /// <summary>
+        /// тип данных для хранения наилучшей и наихуйдшей вершины
+        /// </summary>
+        struct ExtrPoint
+        {
+            /// <summary>
+            /// // 0 - если плохая вершина, 1 - если вершина хорошая
+            /// </summary>
+            public int Flag;
+
+            /// <summary>
+            /// индекс в массиве точек комплекса
+            /// </summary>
+            public int Index;
+
+            /// <summary>
+            /// значение функции в этой точке
+            /// </summary>
+            public double ValueFunc;
+
+            /// <summary>
+            /// координаты точки
+            /// </summary>
+            public Point ValuePoint;
+        }
+
+        /// <summary>
+        /// массив для хранения исходных вершин
+        /// </summary>
+        private static Point[] _StartPoints { get; set; }
+
+        /// <summary>
+        /// массив для хранения активного комплекса
+        /// </summary>
+        private static Point[] _ComplexPoints { get; set; }
+
+        /// <summary>
+        /// массив для хранения точек, не выполняющих условия
+        /// </summary>
+        private Point[] _ErrorPoints { get; set; }
+
+        private double[] _ValuesFunc { get; set; }
+
+        private void SearchPoints(ref bool flag, ref int countErrorPoints, ref int countComplexPoints, int countPoint)
+        {
+            countComplexPoints = 0;
+            countErrorPoints = 0;
+            Random random = new Random();
+            Complices = new List<Complex>();
+
+            // находим начальные точки
+            for (int i = 0; i < countPoint; i++)
+            {
+                _StartPoints[i] = new Point(
+                    t1min + random.NextDouble() * (t1max - t1min),
+                    t2min + random.NextDouble() * (t2max - t2min));
+            }
+
+            flag = true; // false если хотя бы одна вершина удовлетворяет условиям
+
+            for (int i = 0; i < countPoint; i++)
+            {
+
+                // проверяем что найденная вершина удовлетворяет ограничениям второго рода
+                if (_StartPoints[i].X * 0.5 + _StartPoints[i].Y <= tempDiff)
+                {
+                    _ComplexPoints[countComplexPoints] = new Point(_StartPoints[i].X, _StartPoints[i].Y);
+
+                    flag = false;
+                    countComplexPoints++;
+                }
+                else
+                {
+                    _ErrorPoints[countErrorPoints] = new Point(_StartPoints[i].X, _StartPoints[i].Y);
+
+                    countErrorPoints++;
+                }
+            }
+        }
+
+        public void Calc(out List<Point3D> points)
+        {
+            points = new List<Point3D>();
+
+            // определяем количество вершин комплекса
+            var countPoint = 0;
+            if (N <= 5)
+                countPoint = (int)N * 2;
+            else
+                countPoint = (int)N + 1;
+
+            _StartPoints = new Point[countPoint]; // массив исходных точек
+            _ComplexPoints = new Point[countPoint];
+            _ErrorPoints = new Point[countPoint];
+            _ValuesFunc = new double[countPoint];
+
+
+
+            bool flag = true; // false - если хотя бы одна вершина удовлетворяет условиям
+            int countErrorPoints = 0;
+            int countComplexPoints = 0;
+
+            while (flag)
+            {
+                SearchPoints(ref flag, ref countErrorPoints, ref countComplexPoints, countPoint);
+
+            }
+
+            double sumComplexPointsX = 0;
+            double sumComplexPointsY = 0;
+
+            //считаем сумму значений по каждой координате
+            for (int i = 0; i < countComplexPoints; i++)
+            {
+                sumComplexPointsX += _ComplexPoints[i].X;
+                sumComplexPointsY += _ComplexPoints[i].Y;
+            }
+
+            // исправление вершин, которые не выполняют ограничения
+            for (int i = 0; i < countErrorPoints; i++)
+            {
+                _ErrorPoints[i].X = 0.5 * (_ErrorPoints[i].X + (1 / (countComplexPoints)) * sumComplexPointsX);
+                _ErrorPoints[i].Y = 0.5 * (_ErrorPoints[i].Y + (1 / (countComplexPoints)) * sumComplexPointsY);
+
+                if (_ErrorPoints[i].X * 0.5 + _ErrorPoints[i].Y <=
+                    tempDiff) // проверяем что в найденной вершине выполняются ограничения второго рода
+                {
+                    _ComplexPoints[countComplexPoints] = new Point(_ErrorPoints[i].X, _ErrorPoints[i].Y);
+
+                    countComplexPoints++;
+                }
+
+                else
+                {
+                    i -= 1;
+                }
+            }
+
+            // вычисление значений функции в вершинах комплекса
+            for (int i = 0; i < _ComplexPoints.Length; i++)
+            {
+                _ValuesFunc[i] = Function(_ComplexPoints[i].X, _ComplexPoints[i].Y);
+            }
+
+            int number = 0;
+
+            while (true)
+            {
+                for (int i = 0; i < _ComplexPoints.Length; i++)
+                {
+                    Complices.Add(new Complex
+                    {
+                        NumberComplex = number,
+                        PointX = _ComplexPoints[i].X,
+                        PointY = _ComplexPoints[i].Y,
+                        Func = _ValuesFunc[i]
+                    });
+                }
+
+                number++;
+
+                double[] sortValuesFunc = new double[_ValuesFunc.Length];
+
+                for (int i = 0; i < _ValuesFunc.Length; i++)
+                {
+                    sortValuesFunc[i] = _ValuesFunc[i];
+                }
+
+                Array.Sort(sortValuesFunc);
+
+                var extrPoint = new ExtrPoint[2]; // массив для хранения самой "хорошей" и самой "плохой" вершины
+
+                // запоминаем точки самой "хорошей" и самой "плохой" вершины
+                for (int i = 0; i < _ValuesFunc.Length; i++)
+                {
+                    if (_ValuesFunc[i] == sortValuesFunc[0])
+                    {
+                        extrPoint[0].Flag = 1;
+                        extrPoint[0].Index = i;
+                        extrPoint[0].ValueFunc = _ValuesFunc[i];
+                        extrPoint[0].ValuePoint = _ComplexPoints[i];
+                    }
+
+                    else if (_ValuesFunc[i] == sortValuesFunc[sortValuesFunc.Length - 1])
+                    {
+                        extrPoint[extrPoint.Length - 1].Flag = 0;
+                        extrPoint[extrPoint.Length - 1].Index = i;
+                        extrPoint[extrPoint.Length - 1].ValueFunc = _ValuesFunc[i];
+                        extrPoint[extrPoint.Length - 1].ValuePoint = _ComplexPoints[i];
+                    }
+                }
+
+                var centerPoint = new Point(); // координата центра комплекса
+
+                double
+                    sumMinusExtrValX =
+                        0; // хранение суммы значений вершин по Х минус худшая вершина для промежуточных вычислений
+                double
+                    sumMinusExtrValY =
+                        0; // хранение суммы значений вершин по Х минус худшая вершина для промежуточных вычислений
+
+
+                // вычисление промежуточной суммы для координаты центра комплекса
+                for (int i = 0; i < _ComplexPoints.Length; i++)
+                {
+                    sumMinusExtrValX += _ComplexPoints[i].X;
+                    sumMinusExtrValY += _ComplexPoints[i].Y;
+                }
+
+                // координаты центра комплекса
+                centerPoint.X = 1.0 / (countPoint - 1) *
+                                (sumMinusExtrValX - extrPoint.Last(x => x.Flag == 0).ValuePoint.X);
+                centerPoint.Y = 1.0 / (countPoint - 1) *
+                                (sumMinusExtrValY - extrPoint.Last(x => x.Flag == 0).ValuePoint.Y);
+
+                double sumB = 0; // хранение суммы для проверки окончания поиска
+
+                sumB += Math.Abs((centerPoint.X - extrPoint.Last(x => x.Flag == 0).ValuePoint.X)) +
+                        Math.Abs((centerPoint.X - extrPoint.Last(x => x.Flag == 1).ValuePoint.X));
+                sumB += Math.Abs((centerPoint.Y - extrPoint.Last(x => x.Flag == 0).ValuePoint.Y)) +
+                        Math.Abs((centerPoint.Y - extrPoint.Last(x => x.Flag == 1).ValuePoint.Y));
+
+                double B = 1.0 / (2 * N) * sumB;
+
+
+
+                if (B < 0.1)
+                {
+                    var point = new Point3D
+                    {
+                        X = Math.Round(centerPoint.X, 2),
+                        Y = Math.Round(centerPoint.Y, 2),
+                        Z = Math.Round(Function(centerPoint.X, centerPoint.Y), 2),
+                    };
+                    points.Add(point);
+                    return;
+                }
+
+                else
+                {
+                    var newPoint = new Point
+                    {
+                        X = 2.3 * centerPoint.X - 1.3 * extrPoint.Last(x => x.Flag == 0).ValuePoint.X,
+                        Y = 2.3 * centerPoint.Y - 1.3 * extrPoint.Last(x => x.Flag == 0).ValuePoint.Y
+                    }; // новая координата взамен наихудшей
+
+                    // проверям ограничений первого рода                
+                    if (t1min > newPoint.X)
+                    {
+                        newPoint.X = t1min + 0.1;
+                    }
+                    else if (newPoint.X > t2max)
+                    {
+                        newPoint.X = t1min - 0.1;
+                    }
+
+                    if (t1max > newPoint.Y)
+                    {
+                        newPoint.Y = t2max + 0.1;
+                    }
+                    else if (newPoint.Y > t2max)
+                    {
+                        newPoint.Y = t2max - 0.1;
+                    }
+
+                    // проверка ограничений второго рода
+                    // пока ограничение не выполняется смещаем координату к центру
+                    while ((newPoint.X * 0.5 + newPoint.Y) > tempDiff)
+                    {
+                        newPoint.X = 0.5 * (newPoint.X + centerPoint.X);
+                        newPoint.Y = 0.5 * (newPoint.Y + centerPoint.Y);
+                    }
+
+                    // вычисляем значение функции в новой точке
+                    double newPointF = Function(newPoint.X, newPoint.Y);
+
+                    while (newPointF > extrPoint.Last(x => x.Flag == 0).ValueFunc)
+                    {
+                        newPoint.X = 0.5 * (newPoint.X + extrPoint.Last(x => x.Flag == 1).ValuePoint.X);
+                        newPoint.Y = 0.5 * (newPoint.Y + extrPoint.Last(x => x.Flag == 1).ValuePoint.Y);
+                        newPointF = Function(newPoint.X, newPoint.Y);
+                    }
+
+                    // записываем значения новой точке в массив вершин Комплекса
+                    _ComplexPoints[extrPoint.Last(x => x.Flag == 0).Index] = newPoint;
+                    _ValuesFunc[extrPoint.Last(x => x.Flag == 0).Index] = newPointF;
+                }
+            }
+        }
+        
+        #endregion
     }
 }

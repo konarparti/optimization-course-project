@@ -22,5 +22,7 @@ namespace OptimizatonMethods.Models
             Y = y;
             Z = z;
         }
+        public Point3D()
+        { }
     }
 }
