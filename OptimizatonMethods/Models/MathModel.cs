@@ -11,24 +11,24 @@ namespace OptimizatonMethods.Models
 {
     public class MathModel
     {
-        private readonly Task _task;
-        private double _step;
-        private double _k = 10;
-        private double _r = 2;
-        private double _n = 2;
-        private double _epsilon = 0.01;
-        private double alpha;
-        private double beta;
-        private double mu;
-        private double delta;
-        private double G;
-        private double A;
-        private double N;
-        private double t1min;
-        private double t1max;
-        private double t2min;
-        private double t2max;
-        private double tempDiff;
+        public readonly Task _task;
+        public double _step;
+        public double _k = 10;
+        public double _r = 2;
+        public double _n = 2;
+        public double _epsilon = 0.01;
+        public double alpha;
+        public double beta;
+        public double mu;
+        public double delta;
+        public double G;
+        public double A;
+        public double N;
+        public double t1min;
+        public double t1max;
+        public double t2min;
+        public double t2max;
+        public double tempDiff;
         List<Point3D> values = new List<Point3D>();
 
         public MathModel(Task task)
@@ -106,7 +106,7 @@ namespace OptimizatonMethods.Models
                     var value = Function(t1, t2);
                     if (value < 0)
                     {
-                        MessageBox.Show($"t1 {t1} t2 {t2} Z {value}");
+                        //MessageBox.Show($"t1 {t1} t2 {t2} Z {value}");
                     }
                     points3D.Add(new Point3D(Math.Round(t1, 2), Math.Round(t2, 2), Math.Round(value, 2)));
 

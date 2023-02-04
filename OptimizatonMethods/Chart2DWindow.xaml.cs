@@ -37,32 +37,35 @@ namespace OptimizatonMethods
 
         private void drawChart(WPFChartViewer viewer)
         {
-            double[] dataX = new double[] { -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7 };
-            double[] dataY = new double[] { -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-            double[] dataZ = new double[dataX.Length * dataY.Length];
-            var k = 0;
-            var math = new MathModel(_task);
-            for (int i = 0; i < dataX.Length; i++)
+            var dataX = new List<double>();
+            var dataY = new List<double>();
+            var step = 1;
+
+            var mathModel = new MathModel(_task);
+            for (double i = mathModel.t1min - step; i < mathModel.t1max + step; i += step)
             {
-                for (int j = 0; j < dataY.Length; j++)
+                dataX.Add(i);
+            }
+            for (double i = mathModel.t2min - step; i < mathModel.t2max + step; i += step)
+            {
+                dataY.Add(i);
+            }
+            var dataZ = new List<double>();
+
+            for (int i = 0; i < dataX.Count; i++)
+            {
+                for (int j = 0; j < dataY.Count; j++)
                 {
-                    if (Math.Abs(dataY[j] - dataX[i]) < 2)
-                    {
-                        dataZ[k] = -1;
-                        k++;
-                    }
-                    else
-                    {
-                        if (math.Function(dataX[i], dataY[j]) < 1000)
-                        {
-                            dataZ[k] = math.Function(dataX[i], dataY[j]);
-                        }
-                        else
-                        {
-                            dataZ[k] = 1000;
-                        }
-                        k++;
-                    }
+                    dataZ.Add(0);
+                }
+            }
+            var k = 0;
+
+            for (int i = 0; i < dataX.Count; i++)
+            {
+                for (int j = 0; j < dataY.Count; j++)
+                {
+                    dataZ[j * dataX.Count + i] = mathModel.Function(dataX[i], dataY[j]);
                 }
             }
 
@@ -94,7 +97,7 @@ namespace OptimizatonMethods
             c.yAxis().setLinearScale(-8, 8, 1);
 
             // Add a contour layer using the given data
-            contourLayer = c.addContourLayer(dataX, dataY, dataZ);
+            contourLayer = c.addContourLayer(dataX.ToArray(), dataY.ToArray(), dataZ.ToArray());
             contourLayer.setContourLabelFormat("<*font=Arial Bold,size=10*>{value}<*/font*>");
 
             contourLayer.setZBounds(0);
