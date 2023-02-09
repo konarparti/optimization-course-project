@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using OptimizatonMethods.Models;
 using WPF_MVVM_Classes;
 using ViewModelBase = OptimizatonMethods.Services.ViewModelBase;
@@ -49,9 +50,16 @@ public class GeneticAlgSettingWindowViewModel : ViewModelBase
         {
             return new RelayCommand(command =>
             {
-                var calc = new MathModel(_task);
-                CloseGeneticAlgSettingWindow();
-                calc.GeneticAlg(CountPopulation);
+                if(CountPopulation > 0)
+                {
+                    var calc = new MathModel(_task);
+                    CloseGeneticAlgSettingWindow();
+                    calc.GeneticAlg(CountPopulation);
+                }
+                else
+                {
+                    MessageBox.Show("Введите натурально число поколений.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             });
         }
     }

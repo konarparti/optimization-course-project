@@ -28,5 +28,10 @@ namespace OptimizatonMethods
         {
             FontSize = (ActualHeight + ActualHeight / ActualWidth * ActualWidth) / 44;
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            ((dynamic)this.DataContext).Password = ((PasswordBox)sender).Password;
+        }
     }
 }

@@ -25,10 +25,10 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row ="1" Grid.Column="1">Логин:</Label>
-        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Username}"></TextBox>
+        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Username}" FontSize="16"></TextBox>
 
         <Label Grid.Row ="4" Grid.Column="1">Пароль:</Label>
-        <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Password}"></TextBox>
+        <PasswordBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" FontSize="16" PasswordChanged="PasswordBox_PasswordChanged"></PasswordBox>
 
         <Grid Grid.Row="7" Grid.ColumnSpan="4">
             <Grid.RowDefinitions>
