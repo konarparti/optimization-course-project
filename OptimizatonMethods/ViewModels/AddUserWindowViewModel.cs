@@ -55,7 +55,7 @@ namespace OptimizatonMethods.ViewModels
         {
             get
             {
-                return new RelayCommand(x =>
+                return new RelayCommand(async x =>
                 {
                     if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
                     {
@@ -67,7 +67,7 @@ namespace OptimizatonMethods.ViewModels
                     {
                         _user.Username = Username;
                         _user.Password = Password;
-                        _userRepository.SaveUser(_user);
+                        await _userRepository.SaveUserAsync(_user);
                         MessageBox.Show("Информация о пользователе обновлена", "Информация", MessageBoxButton.OK,
                             MessageBoxImage.Information);
                     }
@@ -78,7 +78,7 @@ namespace OptimizatonMethods.ViewModels
                             Username = Username,
                             Password = Password
                         };
-                        _userRepository.SaveUser(newUser);
+                        await _userRepository.SaveUserAsync(newUser);
                         MessageBox.Show("Пользователь успешно добавлен", "Информация", MessageBoxButton.OK,
                             MessageBoxImage.Information);
                     }

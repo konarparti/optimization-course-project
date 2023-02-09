@@ -1,4 +1,6 @@
-﻿using OptimizatonMethods.Models.Data.Abstract;
+﻿using Microsoft.EntityFrameworkCore;
+using OptimizatonMethods;
+using OptimizatonMethods.Models.Data.Abstract;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,9 +16,9 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
         }
         public IEnumerable<User> GetAllUsers() => _context.Users.ToList();
 
-        public bool VerifyUser(string username, string password)
+        public async System.Threading.Tasks.Task<bool> VerifyUserAsync(string username, string password)
         {
-            var value =_context.Users.FirstOrDefault(x => (x.Username == username && x.Password == password));
+            var value = await _context.Users.FirstOrDefaultAsync(x => (x.Username == username && x.Password == password));
             if (value != null)
                 return true;
             else
@@ -24,28 +26,28 @@ namespace OptimizatonMethods.Models.Data.EntityFramework
         }
 
 
-        public void SaveUser(User user)
+        public async System.Threading.Tasks.Task SaveUserAsync(User user)
         {
             if (user.Id == 0)
-                _context.Users.Add(user);
+                await _context.Users.AddAsync(user);
             else
             {
-                var dbEntry = _context.Users.FirstOrDefault(u => u.Id == user.Id);
+                var dbEntry = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
                 if (dbEntry != null)
                 {
                     dbEntry.Username = user.Username;
                     dbEntry.Password = user.Password;
                 }
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteUser(long id)
+        public async System.Threading.Tasks.Task DeleteUserAsync(long id)
         {
-            var value = _context.Users.Find(id);
+            var value = await _context.Users.FindAsync(id);
             if (value != null)
                 _context.Users.Remove(value);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

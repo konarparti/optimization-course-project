@@ -259,7 +259,7 @@ namespace OptimizatonMethods.ViewModels
         {
             get
             {
-                return new RelayCommand(c =>
+                return new RelayCommand(async c =>
                 {
                     if (_selectedUser == null)
                     {
@@ -273,7 +273,7 @@ namespace OptimizatonMethods.ViewModels
                                 "Информация",
                                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                         {
-                            _userRepository.DeleteUser(_selectedUser.Id);
+                            await _userRepository.DeleteUserAsync(_selectedUser.Id);
                         }
                     }
 

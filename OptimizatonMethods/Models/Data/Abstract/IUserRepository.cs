@@ -5,11 +5,11 @@ namespace OptimizatonMethods.Models.Data.Abstract
     public interface IUserRepository
     {
         IEnumerable<User> GetAllUsers();
-        bool VerifyUser(string username, string password);
-        void SaveUser(User user);
-        
+        System.Threading.Tasks.Task<bool> VerifyUserAsync(string username, string password);
+        System.Threading.Tasks.Task SaveUserAsync(User user);
+
         //TODO: возможно стоит возвращать удаленного user 
-        void DeleteUser(long id);
+        System.Threading.Tasks.Task DeleteUserAsync(long id);
 
     }
 }

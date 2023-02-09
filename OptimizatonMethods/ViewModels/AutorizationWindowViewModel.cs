@@ -64,7 +64,7 @@ namespace OptimizatonMethods.ViewModels
         {
             get
             {
-                return new RelayCommand(c =>
+                return new RelayCommand(async c =>
                 {
                     if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
                     {
@@ -72,7 +72,7 @@ namespace OptimizatonMethods.ViewModels
                             MessageBoxImage.Warning);
                         return;
                     }
-                    if (_userRepository.VerifyUser(Username, Password))
+                    if (await _userRepository.VerifyUserAsync(Username, Password))
                     {
                         var adminPanel = new AdminWindowViewModel(_methodRepository, _taskRepository, _userRepository, _viewModelBase);
                         ShowAdmin(adminPanel);
