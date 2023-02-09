@@ -131,10 +131,10 @@ namespace OptimizatonMethods.ViewModels
                         return;
                     }
                     var calc = new MathModel(Task);
-                    
+
                     if (SelectedMethod.Name == "Генетический алгоритм")
                     {
-                        var genAlg = new GeneticAlgSettingWindowViewModel(Task);
+                        var genAlg = new GeneticAlgSettingWindowViewModel(Task, this);
                         ShowGeneticAlgSettingWindow(genAlg, "Настройка генетического алгоритма");
                     }
 
@@ -195,7 +195,7 @@ namespace OptimizatonMethods.ViewModels
                         {
                             temp.Add(item.Z);
                         }
-                        
+
                         MessageBox.Show($"Минимальная себестоимость, у.е.: {temp.Min()}\n " +
                                         $"Температура в змеевике Т1, С: {points3D.Find(x => x.Z == temp.Min()).X}\n " +
                                         $"Температура в диффузоре Т2, С: {points3D.Find(x => x.Z == temp.Min()).Y}");
@@ -266,6 +266,21 @@ namespace OptimizatonMethods.ViewModels
         public void UpdateTask()
         {
             AllTasks = _taskRepository.GetAllTasks();
+        }
+
+        public void SetGeneticAlgData(List<Point3D> points)
+        {
+            DataList = points;
+            var temp = new List<double>();
+
+            foreach (var item in points)
+            {
+                temp.Add(item.Z);
+            }
+
+            MessageBox.Show($"Минимальная себестоимость, у.е.: {temp.Min()}\n " +
+                            $"Температура в змеевике Т1, С: {points.Find(x => x.Z == temp.Min()).X}\n " +
+                            $"Температура в диффузоре Т2, С: {points.Find(x => x.Z == temp.Min()).Y}");
         }
     }
 }

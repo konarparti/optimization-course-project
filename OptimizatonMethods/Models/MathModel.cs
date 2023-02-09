@@ -128,8 +128,9 @@ namespace OptimizatonMethods.Models
             MessageId = "type: OptimizatonMethods.Models.Point3D[]")]
         [SuppressMessage("ReSharper.DPA", "DPA0003: Excessive memory allocations in LOH",
             MessageId = "type: OptimizatonMethods.Models.Point[]")]
-        public void GeneticAlg(int count)
+        public void GeneticAlg(int count, out List<Point3D> points)
         {
+            points = new List<Point3D>();
             var rand = new Random();
             var population = new List<Point>();
             int countOfIndividuals = 0;
@@ -260,6 +261,11 @@ namespace OptimizatonMethods.Models
                     values.Add(new Point3D(value.X, value.Y, v));
                 }
 
+                var temp2 = values
+                    .Select(value => new Point3D(Math.Round(value.X, 2), Math.Round(value.Y, 2), Math.Round(value.Z, 2))).ToList();
+
+                points.AddRange(temp2);
+
                 values.Sort(delegate (Point3D p1, Point3D p2)
                 {
                     if (p1.Z > p2.Z)
@@ -269,12 +275,7 @@ namespace OptimizatonMethods.Models
                     return 0;
                 }); // сортировка по возрастанию
 
-
             }
-
-            MessageBox.Show($" Температура в змеевике Т1, С: {Math.Round(values[0].X, 2)}\n " +
-                            $"Температура в диффузоре Т2, С: {Math.Round(values[0].Y, 2)} \n " +
-                            $"Минимальная себестоимость, у.е.:{Math.Round(values[0].Z, 2)}");
         }
 
         #region Box
@@ -590,11 +591,11 @@ namespace OptimizatonMethods.Models
                     // записываем значения новой точке в массив вершин Комплекса
                     _ComplexPoints[extrPoint.Last(x => x.Flag == 0).Index] = newPoint;
                     _ValuesFunc[extrPoint.Last(x => x.Flag == 0).Index] = newPointF;
-                    points.Add(new Point3D(Math.Round(newPoint.X,2), Math.Round(newPoint.Y,2), Math.Round(newPointF,2)));
+                    points.Add(new Point3D(Math.Round(newPoint.X, 2), Math.Round(newPoint.Y, 2), Math.Round(newPointF, 2)));
                 }
             }
         }
-        
+
         #endregion
     }
 }

@@ -12,19 +12,20 @@ namespace OptimizatonMethods.ViewModels;
 
 public class GeneticAlgSettingWindowViewModel : ViewModelBase
 {
-    private readonly Task _task;
-
     #region Variables
-    
+
     private int _countPopulation;
+    private readonly Task _task;
+    private readonly MainWindowViewModel _viewModelBase;
 
     #endregion
 
     #region Constructors
 
-    public GeneticAlgSettingWindowViewModel(Task task)
+    public GeneticAlgSettingWindowViewModel(Task task, MainWindowViewModel viewModelBase)
     {
         _task = task;
+        _viewModelBase = viewModelBase;
     }
 
     #endregion
@@ -50,11 +51,12 @@ public class GeneticAlgSettingWindowViewModel : ViewModelBase
         {
             return new RelayCommand(command =>
             {
-                if(CountPopulation > 0)
+                if (CountPopulation > 0)
                 {
                     var calc = new MathModel(_task);
                     CloseGeneticAlgSettingWindow();
-                    calc.GeneticAlg(CountPopulation);
+                    calc.GeneticAlg(CountPopulation, out var points);
+                    _viewModelBase.SetGeneticAlgData(points);
                 }
                 else
                 {
