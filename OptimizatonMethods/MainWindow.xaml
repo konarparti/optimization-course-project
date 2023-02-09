@@ -23,6 +23,7 @@
                 <MenuItem Header="Сменить пользователя" Command="{Binding AutorizationCommand}"/>
                 <MenuItem Header="2D график" Command="{Binding TwoDChartCommand}"/>
                 <MenuItem Header="3D график" Command="{Binding ThreeDChartCommand}"/>
+                <MenuItem Header="Экспорт результатов" Command="{Binding ExportCommand}"/>
             </MenuItem>
             <MenuItem Header="О программе"/>
         </Menu>

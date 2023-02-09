@@ -11,6 +11,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using WPF_MVVM_Classes;
 using ViewModelBase = OptimizatonMethods.Services.ViewModelBase;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace OptimizatonMethods.ViewModels
 {
@@ -26,7 +27,7 @@ namespace OptimizatonMethods.ViewModels
         private Task? _selectedTask;
         private Method? _selectedMethod;
         private RelayCommand? _calculateCommand;
-        private IEnumerable _dataList;
+        private IEnumerable<Point3D> _dataList;
         private List<Point3D> _point3D = new();
         private PlotModel _myModel;
 
@@ -95,7 +96,7 @@ namespace OptimizatonMethods.ViewModels
             }
         }
 
-        public IEnumerable DataList
+        public IEnumerable<Point3D> DataList
         {
             get => _dataList;
             set
@@ -211,6 +212,12 @@ namespace OptimizatonMethods.ViewModels
             {
                 return new RelayCommand(r =>
                 {
+                    if (DataList is null || !DataList.Any())
+                    {
+                        MessageBox.Show("Для построения линий равных значений целевой функции необходимо произвести расчеты.", "Ошибка",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
                     var test = new Chart2DWindow(DataList as List<Point3D>, Task);
                     test.Show();
                 });
@@ -225,6 +232,12 @@ namespace OptimizatonMethods.ViewModels
             {
                 return new RelayCommand(r =>
                 {
+                    if (DataList is null || !DataList.Any())
+                    {
+                        MessageBox.Show("Для построения поверхности отклика целевой функции необходимо произвести расчеты.", "Ошибка",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
                     var test = new Chart3DWindow(DataList as List<Point3D>, Task);
                     test.Show();
                 });
@@ -243,7 +256,117 @@ namespace OptimizatonMethods.ViewModels
             }
         }
 
+        public RelayCommand ExportCommand
+        {
+            get
+            {
+                return new RelayCommand(command =>
+                {
+                    if (DataList is null || !DataList.Any())
+                    {
+                        MessageBox.Show("Для экспорта отчета необходимо произвести расчеты.", "Ошибка",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    var data = DataList as List<Point3D>;
+                    var temp = new List<double>();
+
+                    foreach (var item in data)
+                    {
+                        temp.Add(item.Z);
+                    }
+
+                    var excelApp = new Excel.Application
+                    {
+                        SheetsInNewWorkbook = 1
+                    };
+
+                    var workBook = excelApp.Workbooks.Add();
+                    var workSheet = (Excel.Worksheet)workBook.Worksheets.Item[1];
+                    workSheet.Name = "Результаты";
+
+                    workSheet.Cells[1, 3] = "Температура в змеевике, °C";
+                    workSheet.Cells[1, 4] = "Температура в диффузоре, °C";
+                    workSheet.Cells[1, 5] = "Себестоимость продукта, у.е.";
+
+                    workSheet.Cells[1, 1] = "Входные данные"; workSheet.Cells[1, 1].Font.Bold = true;
+                    workSheet.Cells[1, 1].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                    workSheet.Range[workSheet.Cells[1, 1], workSheet.Cells[1, 2]].Merge();
+
+                    workSheet.Cells[2, 1] = "Задание:";
+                    workSheet.Cells[2, 1].Font.Bold = true;
+                    workSheet.Cells[2, 2] = SelectedTask.Name;
+
+                    workSheet.Cells[4, 1] = "Нормирующий множитель α";
+                    workSheet.Cells[4, 2] = Task.Alpha;
+                    workSheet.Cells[5, 1] = "Нормирующий множитель β";
+                    workSheet.Cells[5, 2] = Task.Beta;
+                    workSheet.Cells[6, 1] = "Нормирующий множитель μ";
+                    workSheet.Cells[6, 2] = Task.Mu;
+                    workSheet.Cells[7, 1] = "Нормирующий множитель Δ";
+                    workSheet.Cells[7, 2] = Task.Delta;
+                    workSheet.Cells[8, 1] = "Расход реакционной массы, кг/ч";
+                    workSheet.Cells[8, 2] = Task.G;
+                    workSheet.Cells[9, 1] = "Давление в реакторе, КПа";
+                    workSheet.Cells[9, 2] = Task.A;
+                    workSheet.Cells[10, 1] = "Количество теплообменных устройств , шт";
+                    workSheet.Cells[10, 2] = Task.N;
+
+                    workSheet.Cells[11, 1] = "Ограничения";
+                    workSheet.Cells[11, 1].Font.Bold = true;
+                    workSheet.Range[workSheet.Cells[10, 1], workSheet.Cells[10, 2]].Merge();
+
+                    workSheet.Cells[12, 1] = "Минимальная температура в змеевике Т1, °C";
+                    workSheet.Cells[12, 2] = Task.T1min;
+                    workSheet.Cells[13, 1] = "Максимальная температура в змеевике Т1, °C";
+                    workSheet.Cells[13, 2] = Task.T1max;
+
+                    workSheet.Cells[14, 1] = "Минимальная температура в диффузоре Т2, °C";
+                    workSheet.Cells[14, 2] = Task.T2min;
+                    workSheet.Cells[15, 1] = "Максимальная температура в диффузоре Т2, °C";
+                    workSheet.Cells[15, 2] = Task.T2max;
+
+                    workSheet.Cells[16, 1] = "Разница температур Т2-Т1, °C";
+                    workSheet.Cells[16, 2] = Task.DifferenceTemp;
+
+                    workSheet.Cells[17, 1] = "Себестоимость 1 кг. компонента, у.е.";
+                    workSheet.Cells[17, 2] = Task.Price;
+
+                    workSheet.Cells[18, 1] = "Точность решения, у.е.";
+                    workSheet.Cells[18, 2] = Task.Step;
+
+                    workSheet.Cells[19, 1] = "Выбранный метод решения";
+                    workSheet.Cells[19, 1].Font.Bold = true;
+                    workSheet.Cells[19, 2] = SelectedMethod.Name;
+
+                    workSheet.Cells[20, 1] = "Результаты расчета";
+                    workSheet.Cells[20, 1].Font.Bold = true;
+                    workSheet.Cells[20, 1].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                    workSheet.Range[workSheet.Cells[20, 1], workSheet.Cells[20, 2]].Merge();
+
+                    workSheet.Cells[21, 1] = "Температура в змеевике Т1, °C";
+                    workSheet.Cells[21, 2] = data.Find(x => x.Z == temp.Min()).X;
+                    workSheet.Cells[22, 1] = "Температура в змеевике Т1, °C";
+                    workSheet.Cells[22, 2] = data.Find(x => x.Z == temp.Min()).Y;
+                    workSheet.Cells[23, 1] = "Минимальная себестоимость, у.е.";
+                    workSheet.Cells[23, 2] = temp.Min();
+
+                    for (int i = 2; i <= data.Count + 1; i++)
+                    {
+                        workSheet.Cells[i, 3] = data[i - 2].X;
+                        workSheet.Cells[i, 4] = data[i - 2].Y;
+                        workSheet.Cells[i, 5] = data[i - 2].Z;
+                    }
+
+                    workSheet.Columns.AutoFit();
+                    excelApp.Visible = true;
+                });
+            }
+        }
         #endregion
+
+        #region Function
 
         private void CheckValues(out string errors)
         {
@@ -282,5 +405,8 @@ namespace OptimizatonMethods.ViewModels
                             $"Температура в змеевике Т1, С: {points.Find(x => x.Z == temp.Min()).X}\n " +
                             $"Температура в диффузоре Т2, С: {points.Find(x => x.Z == temp.Min()).Y}");
         }
+
+        #endregion
+
     }
 }
