@@ -92,9 +92,9 @@ namespace OptimizatonMethods
             c.xAxis().setLabelStyle("Arial", 10);
             c.yAxis().setLabelStyle("Arial", 10);
 
-            // When auto-scaling, use tick spacing of 40 pixels as a guideline
-            c.xAxis().setLinearScale(-18, 7, 1);
-            c.yAxis().setLinearScale(-8, 8, 1);
+            //// When auto-scaling, use tick spacing of 40 pixels as a guideline
+            //c.xAxis().setLinearScale(-18, 7, 1);
+            //c.yAxis().setLinearScale(-8, 8, 1);
 
             // Add a contour layer using the given data
             contourLayer = c.addContourLayer(dataX.ToArray(), dataY.ToArray(), dataZ.ToArray());

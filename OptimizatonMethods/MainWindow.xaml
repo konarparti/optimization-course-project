@@ -134,11 +134,11 @@
             <TabItem Header="Таблица">
                 <DataGrid ItemsSource="{Binding DataList}" AutoGenerateColumns="True" AutoGeneratingColumn="OnAutoGeneratingColumn" ColumnWidth="*"></DataGrid>
             </TabItem>
-            <TabItem Header="2D-график">
+            <!--<TabItem Header="2D-график">
                 <TabItem.Content>
                     <oxy:PlotView MinHeight="350" Model="{Binding MyModel}"></oxy:PlotView>
                 </TabItem.Content>
-            </TabItem>
+            </TabItem>-->
         </TabControl>
 
     </Grid>
