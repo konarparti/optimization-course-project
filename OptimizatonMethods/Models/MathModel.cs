@@ -590,6 +590,7 @@ namespace OptimizatonMethods.Models
                     // записываем значения новой точке в массив вершин Комплекса
                     _ComplexPoints[extrPoint.Last(x => x.Flag == 0).Index] = newPoint;
                     _ValuesFunc[extrPoint.Last(x => x.Flag == 0).Index] = newPointF;
+                    points.Add(new Point3D(Math.Round(newPoint.X,2), Math.Round(newPoint.Y,2), Math.Round(newPointF,2)));
                 }
             }
         }
